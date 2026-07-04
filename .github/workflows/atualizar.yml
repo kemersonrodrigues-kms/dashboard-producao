@@ -1,51 +1,34 @@
 name: Atualizar Dados de Produção
-
 on:
   schedule:
-    # Roda a cada 30 minutos entre 5h e 23h (horário UTC = BRT+3)
-    # BRT 05:00 = UTC 08:00 | BRT 23:00 = UTC 02:00 (dia seguinte)
-    - cron: '*/30 8-23 * * 1-6'  # Seg-Sáb, 05h-20h BRT
-    - cron: '*/30 0-2  * * 2-7'  # Seg-Sáb, 21h-23h BRT (UTC próx. dia)
-  workflow_dispatch:             # Permite disparar manualmente pelo painel
-
+    - cron: '*/30 8-23 * * 1-6'
+    - cron: '*/30 0-2 * * 0-6'
+  workflow_dispatch:
 jobs:
   coletar:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # necessário para git push
-
+      contents: write
     steps:
-
-      # ── 1. Checkout do repositório ──────────────────────────
       - name: Checkout
         uses: actions/checkout@v4
-
-      # ── 2. Python 3.11 ─────────────────────────────────────
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      # ── 3. Instalar Google Chrome ───────────────────────────
       - name: Instalar Google Chrome
         run: |
           wget -qO /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt-get install -y /tmp/chrome.deb || sudo apt-get install -f -y
-
-      # ── 4. Dependências Python ──────────────────────────────
       - name: Instalar dependências Python
         run: |
           pip install --upgrade pip
           pip install selenium webdriver-manager openpyxl pandas
-
-      # ── 5. Executar coletor ─────────────────────────────────
       - name: Coletar dados do i4
         env:
           I4_USUARIO: ${{ secrets.I4_USUARIO }}
           I4_SENHA:   ${{ secrets.I4_SENHA }}
         run: python coletar_dados.py
-
-      # ── 6. Commit e push do dados.json ──────────────────────
       - name: Salvar dados.json no repositório
         run: |
           git config user.name  "Bot Grow Label"
@@ -54,7 +37,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "Sem alterações nos dados — nenhum commit necessário."
           else
-            # Converte UTC para BRT (UTC-3) para exibir horário correto
             TS_BRT=$(TZ=America/Sao_Paulo date +'%d/%m/%Y %H:%M')
             git commit -m "📊 Dados atualizados — ${TS_BRT} BRT"
             git push
