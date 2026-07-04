@@ -1,0 +1,265 @@
+{
+  "empresa": "Grow Label",
+  "abas": [
+    "Geral",
+    "Flexografia",
+    "Digital",
+    "Polly",
+    "Insert",
+    "Revisão"
+  ],
+  "maquinas": [
+    {
+      "maquina": "01 - MARKANDY 2200",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "02 - KOMORI BICOLOR",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "03 - ES3500",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "04 - SUPERPRINT 250",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "05 - SUPERPRINT 350",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "06 - SUPERPRINT 350 (2)",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "08 - GGS FV",
+      "grupo": "Flexografia",
+      "meta_mh": 1500,
+      "horas_normal": 9,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "09 - WINE TAMBOR CENTRAL",
+      "grupo": "Flexografia",
+      "meta_mh": 1500,
+      "horas_normal": 9,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "10 - DIGITAL",
+      "grupo": "Digital",
+      "meta_mh": 1500,
+      "horas_normal": 16,
+      "horas_segunda": 16
+    },
+    {
+      "maquina": "11 - OMET - FX 420",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 9,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "12 - SPS2 - 350",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "13 - KROMIA",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 16,
+      "horas_segunda": 16
+    },
+    {
+      "maquina": "14 - POLLY M370",
+      "grupo": "Polly",
+      "meta_mh": 800,
+      "horas_normal": 16,
+      "horas_segunda": 16
+    },
+    {
+      "maquina": "15 - MFT300 SELADORA SLEEVE",
+      "grupo": "Outros",
+      "meta_mh": 500,
+      "horas_normal": 9,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "17 - SP4 - 420",
+      "grupo": "Flexografia",
+      "meta_mh": 1800,
+      "horas_normal": 9,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "BERTEC 01",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "BERTEC 02",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "BERTEC 03",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "BERTEC 04",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "DOBRADEIRA 01",
+      "grupo": "Outros",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "DOBRADEIRA 02",
+      "grupo": "Outros",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "DOBRADEIRA 03",
+      "grupo": "Outros",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "DOBRADEIRA 04",
+      "grupo": "Outros",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "GUILHOTINA",
+      "grupo": "Outros",
+      "meta_mh": 500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "INSERT 250 01",
+      "grupo": "Insert",
+      "meta_mh": 300,
+      "horas_normal": 9,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "INSERT 250 02",
+      "grupo": "Insert",
+      "meta_mh": 300,
+      "horas_normal": 9,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "INSERT 350 03",
+      "grupo": "Insert",
+      "meta_mh": 300,
+      "horas_normal": 9,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "REBOBINADEIRA 01",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "REBOBINADEIRA 02",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    },
+    {
+      "maquina": "TECNATRONIC 01",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 16,
+      "horas_segunda": 16
+    },
+    {
+      "maquina": "TECNATRONIC 02",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 16,
+      "horas_segunda": 16
+    },
+    {
+      "maquina": "TECNATRONIC 03",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 16,
+      "horas_segunda": 16
+    },
+    {
+      "maquina": "TECNATRONIC 04",
+      "grupo": "Revisão",
+      "meta_mh": 1500,
+      "horas_normal": 16,
+      "horas_segunda": 16
+    },
+    {
+      "maquina": "R4 ETIRAMA",
+      "grupo": "Outros",
+      "meta_mh": 1500,
+      "horas_normal": 10,
+      "horas_segunda": 10
+    },
+    {
+      "maquina": "R4 ETIRAMA - 2",
+      "grupo": "Outros",
+      "meta_mh": 1500,
+      "horas_normal": 10,
+      "horas_segunda": 10
+    },
+    {
+      "maquina": "WEB TECHNIQUES",
+      "grupo": "Outros",
+      "meta_mh": 1500,
+      "horas_normal": 18,
+      "horas_segunda": 11
+    }
+  ]
+}
