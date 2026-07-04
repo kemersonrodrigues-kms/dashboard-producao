@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard de Produção — Grow Label</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --gl-green:  #1a7c3e;
+    --gl-green2: #22a052;
+    --gl-dark:   #0f4f27;
+    --gl-light:  #e8f5ee;
+    --gl-gray:   #6c757d;
+  }
+
+  body { background: #f4f6f9; font-family: 'Segoe UI', sans-serif; }
+
+  /* ── Header ────────────────────────────────────────────── */
+  .gl-header {
+    background: linear-gradient(135deg, var(--gl-dark), var(--gl-green));
+    color: #fff;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+  }
+  .gl-header h1 { font-size: 1.4rem; font-weight: 700; margin: 0; }
+  .gl-header .subtitle { font-size: .82rem; opacity: .8; margin-top: 2px; }
+  .badge-update {
+    font-size: .72rem;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+    padding: 5px 12px;
+    text-align: right;
+  }
+
+  /* ── Tabs ───────────────────────────────────────────────── */
+  .nav-tabs { border-bottom: 2px solid var(--gl-green); }
+  .nav-tabs .nav-link {
+    color: var(--gl-gray);
+    font-weight: 600;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 10px 18px;
+    transition: .2s;
+  }
+  .nav-tabs .nav-link:hover  { color: var(--gl-green); }
+  .nav-tabs .nav-link.active {
+    color: var(--gl-green);
+    border-bottom: 3px solid var(--gl-green);
+    background: transparent;
+  }
+
+  /* ── KPI Cards ──────────────────────────────────────────── */
+  .kpi-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    border-left: 5px solid var(--gl-green);
+    height: 100%;
+  }
+  .kpi-card .label { font-size: .72rem; color: var(--gl-gray); text-transform: uppercase; letter-spacing: .5px; }
+  .kpi-card .value { font-size: 1.9rem; font-weight: 700; color: #212529; line-height: 1.1; }
+  .kpi-card .sub   { font-size: .78rem; color: var(--gl-gray); margin-top: 4px; }
+  .kpi-card.warn  { border-left-color: #f0ad4e; }
+  .kpi-card.good  { border-left-color: #198754; }
+  .kpi-card.bad   { border-left-color: #dc3545; }
+
+  /* ── Charts ─────────────────────────────────────────────── */
+  .chart-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+  }
+  .chart-title { font-size: .85rem; font-weight: 700; color: #444; margin-bottom: 14px; }
+
+  /* ── Table ──────────────────────────────────────────────── */
+  .gl-table { font-size: .82rem; }
+  .gl-table thead th {
+    background: var(--gl-green);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    padding: 10px 12px;
+  }
+  .gl-table tbody tr:hover { background: var(--gl-light); }
+  .gl-table td { vertical-align: middle; padding: 8px 12px; }
+
+  /* ── Progress bar for performance ───────────────────────── */
+  .perf-bar {
+    height: 8px;
+    border-radius: 4px;
+    background: #e9ecef;
+    overflow: hidden;
+    min-width: 80px;
+  }
+  .perf-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width .4s;
+  }
+
+  /* ── Loading overlay ────────────────────────────────────── */
+  #loading {
+    position: fixed; inset: 0;
+    background: rgba(255,255,255,.9);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    flex-direction: column; gap: 14px;
+  }
+  .spinner-border { color: var(--gl-green); width: 3rem; height: 3rem; }
+
+  /* ── No-data ─────────────────────────────────────────────── */
+  .no-data {
+    text-align: center;
+    color: var(--gl-gray);
+    padding: 60px 20px;
+    font-size: .95rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="spinner-border" role="status"></div>
+  <div style="color:#444;font-weight:600">Carregando dados de produção...</div>
+</div>
+
+<!-- Header -->
+<div class="gl-header">
+  <div>
+    <h1>🌿 Dashboard de Produção</h1>
+    <div class="subtitle">Grow Label — Relatório Automático</div>
+  </div>
+  <div class="badge-update">
+    <div id="periodo-label" style="font-weight:600">—</div>
+    <div id="atualizacao-label">Carregando...</div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="container-fluid px-3 py-3" id="main-content" style="display:none">
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-3" id="abas">
+    <!-- gerado por JS -->
+  </ul>
+
+  <!-- Tab panes -->
+  <div id="tab-content">
+    <!-- gerado por JS -->
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// Utilitários
+// ─────────────────────────────────────────────────────────────
+const fmt  = n => Number(n).toLocaleString('pt-BR');
+const fmtK = n => n >= 1000 ? (n/1000).toFixed(1).replace('.',',') + ' km' : fmt(n) + ' m';
+const pct  = n => (n||0).toFixed(1).replace('.',',') + '%';
+const clrPerf = p => p >= 90 ? '#198754' : p >= 70 ? '#f0ad4e' : '#dc3545';
+
+// Formata data "2024-07-04" → "04/07"
+const fmtDia = s => { const [a,m,d] = s.split('-'); return `${d}/${m}`; };
+
+// ─────────────────────────────────────────────────────────────
+// Renderiza KPI Card
+// ─────────────────────────────────────────────────────────────
+function kpiCard(label, value, sub, extra='') {
+  return `
+    <div class="col-6 col-md-3 mb-3">
+      <div class="kpi-card ${extra}">
+        <div class="label">${label}</div>
+        <div class="value">${value}</div>
+        <div class="sub">${sub}</div>
+      </div>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Tabela de máquinas
+// ─────────────────────────────────────────────────────────────
+function renderTabela(maquinas) {
+  if (!maquinas || !maquinas.length) return '<div class="no-data">Sem dados para exibir</div>';
+  const rows = maquinas.map(m => {
+    const p = m.performance_pct || 0;
+    const cor = clrPerf(p);
+    const barW = Math.min(p, 100);
+    return `
+      <tr>
+        <td>${m.maquina}</td>
+        <td class="text-end">${fmtK(m.metros)}</td>
+        <td class="text-end">${fmt(m.mh)}</td>
+        <td class="text-end">${fmt(m.meta_mh)}</td>
+        <td>
+          <div class="d-flex align-items-center gap-2">
+            <div class="perf-bar" style="width:80px">
+              <div class="perf-fill" style="width:${barW}%;background:${cor}"></div>
+            </div>
+            <span style="color:${cor};font-weight:600;font-size:.8rem">${pct(p)}</span>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+  return `
+    <table class="table table-sm table-hover gl-table">
+      <thead>
+        <tr>
+          <th>Máquina</th>
+          <th class="text-end">Metros</th>
+          <th class="text-end">M/h Real</th>
+          <th class="text-end">Meta M/h</th>
+          <th>Performance</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Cria os gráficos (um por aba)
+// ─────────────────────────────────────────────────────────────
+const chartInstances = {};
+
+function criarGraficoDia(canvasId, porDia) {
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
+  chartInstances[canvasId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: porDia.map(d => fmtDia(d.data)),
+      datasets: [{
+        label: 'Metros produzidos',
+        data: porDia.map(d => d.metros),
+        fill: true,
+        backgroundColor: 'rgba(26,124,62,.12)',
+        borderColor: '#1a7c3e',
+        pointBackgroundColor: '#1a7c3e',
+        tension: 0.35,
+        pointRadius: porDia.length <= 14 ? 4 : 2,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { label: ctx => ' ' + fmt(ctx.raw) + ' m' }
+      }},
+      scales: {
+        x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
+        y: { grid: { color: '#f0f0f0' }, ticks: {
+          font: { size: 11 },
+          callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v
+        }}
+      }
+    }
+  });
+}
+
+function criarGraficoMaquinas(canvasId, maquinas) {
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
+  // Mostra até 12 máquinas
+  const top = maquinas.slice(0, 12);
+  const labels = top.map(m => {
+    // Abrevia: "04 - SUPERPRINT 250" → "04-SP 250"
+    return m.maquina.replace(/^(\d+)\s*-\s*/, '$1-').substring(0, 20);
+  });
+  const perf   = top.map(m => m.performance_pct || 0);
+  const colors = perf.map(p => clrPerf(p) + 'cc');
+
+  chartInstances[canvasId] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Performance (%)',
+          data: perf,
+          backgroundColor: colors,
+          borderRadius: 4,
+        },
+        {
+          label: 'Meta (100%)',
+          data: top.map(() => 100),
+          type: 'line',
+          borderColor: '#dc354588',
+          borderDash: [5, 5],
+          pointRadius: 0,
+          fill: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } },
+                 tooltip: { callbacks: { label: c => ' ' + pct(c.raw) } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 35 } },
+        y: { grid: { color: '#f0f0f0' },
+             ticks: { font: { size: 11 }, callback: v => v + '%' },
+             suggestedMax: 110 }
+      }
+    }
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// Renderiza uma aba completa
+// ─────────────────────────────────────────────────────────────
+function renderAba(nomeAba, info) {
+  const p = info.performance_pct || 0;
+  const horas = ((info.total_minutos||0) / 60).toFixed(1).replace('.',',');
+  const classePerf = p >= 90 ? 'good' : p >= 70 ? 'warn' : (p > 0 ? 'bad' : '');
+  const abaSafe = nomeAba.replace(/[^a-zA-Z0-9]/g,'_');
+
+  return `
+    <!-- KPIs -->
+    <div class="row mb-3">
+      ${kpiCard('Total de Metros', fmtK(info.total_metros), 'produzidos no período')}
+      ${kpiCard('M/h Médio', fmt(info.mh_medio), 'metros por hora')}
+      ${kpiCard('Performance', pct(p), 'vs meta do período', classePerf)}
+      ${kpiCard('Horas Produtivas', horas+'h', 'registradas no período')}
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mb-3">
+      <div class="col-12 col-xl-6 mb-3 mb-xl-0">
+        <div class="chart-card" style="height:260px">
+          <div class="chart-title">📅 Metros por Dia</div>
+          ${info.por_dia && info.por_dia.length
+            ? `<canvas id="chart-dia-${abaSafe}" style="height:200px"></canvas>`
+            : '<div class="no-data">Sem dados diários</div>'}
+        </div>
+      </div>
+      <div class="col-12 col-xl-6">
+        <div class="chart-card" style="height:260px">
+          <div class="chart-title">🏭 Performance por Máquina</div>
+          ${info.por_maquina && info.por_maquina.length
+            ? `<canvas id="chart-maq-${abaSafe}" style="height:200px"></canvas>`
+            : '<div class="no-data">Sem dados por máquina</div>'}
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabela -->
+    <div class="chart-card">
+      <div class="chart-title">📋 Detalhamento por Máquina</div>
+      <div class="table-responsive">
+        ${renderTabela(info.por_maquina)}
+      </div>
+    </div>
+  `;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Bootstrap das abas
+// ─────────────────────────────────────────────────────────────
+function initAbas(dados) {
+  const ABAS = Object.keys(dados.abas);
+  const navEl    = document.getElementById('abas');
+  const contEl   = document.getElementById('tab-content');
+  navEl.innerHTML = '';
+  contEl.innerHTML = '';
+
+  ABAS.forEach((aba, i) => {
+    const abaSafe = aba.replace(/[^a-zA-Z0-9]/g,'_');
+    const info = dados.abas[aba];
+    const metros = info.total_metros || 0;
+
+    // Nav item
+    const li = document.createElement('li');
+    li.className = 'nav-item';
+    li.innerHTML = `
+      <button class="nav-link ${i===0?'active':''}" data-bs-toggle="tab"
+              data-bs-target="#pane-${abaSafe}" type="button">
+        ${aba}
+        ${metros > 0 ? `<span class="badge ms-1" style="background:var(--gl-green);font-size:.65rem">
+          ${fmtK(metros)}</span>` : ''}
+      </button>`;
+    navEl.appendChild(li);
+
+    // Pane
+    const pane = document.createElement('div');
+    pane.className = `tab-pane fade ${i===0?'show active':''}`;
+    pane.id = `pane-${abaSafe}`;
+    pane.innerHTML = renderAba(aba, info);
+    contEl.appendChild(pane);
+  });
+
+  // Desenhar gráficos da aba inicial
+  setTimeout(() => drawChartsForTab(ABAS[0], dados), 50);
+
+  // Ao trocar de aba, desenhar gráficos dessa aba
+  navEl.querySelectorAll('button[data-bs-toggle="tab"]').forEach(btn => {
+    btn.addEventListener('shown.bs.tab', () => {
+      const abaAtiva = btn.textContent.trim().split('\n')[0].trim();
+      drawChartsForTab(abaAtiva, dados);
+    });
+  });
+}
+
+function drawChartsForTab(nomeAba, dados) {
+  const abaSafe = nomeAba.replace(/[^a-zA-Z0-9]/g,'_');
+  const info = dados.abas[nomeAba];
+  if (!info) return;
+  if (info.por_dia && info.por_dia.length) {
+    criarGraficoDia(`chart-dia-${abaSafe}`, info.por_dia);
+  }
+  if (info.por_maquina && info.por_maquina.length) {
+    criarGraficoMaquinas(`chart-maq-${abaSafe}`, info.por_maquina);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Carga principal
+// ─────────────────────────────────────────────────────────────
+async function carregar() {
+  try {
+    const resp = await fetch('dados.json?t=' + Date.now());
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const dados = await resp.json();
+
+    // Header info
+    const periodo = dados.periodo || {};
+    document.getElementById('periodo-label').textContent =
+      (periodo.inicio && periodo.fim)
+        ? `${periodo.inicio} → ${periodo.fim}`
+        : 'Período não disponível';
+
+    if (dados.ultima_atualizacao) {
+      const dt = new Date(dados.ultima_atualizacao);
+      document.getElementById('atualizacao-label').textContent =
+        'Atualizado: ' + dt.toLocaleString('pt-BR');
+    }
+
+    // Montar abas
+    initAbas(dados);
+
+    // Mostrar conteúdo
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('main-content').style.display = '';
+
+  } catch(e) {
+    document.getElementById('loading').innerHTML = `
+      <div style="text-align:center;padding:40px">
+        <div style="font-size:3rem">⚠️</div>
+        <h4 style="color:#dc3545;margin:16px 0 8px">Dados não disponíveis</h4>
+        <p style="color:#666">O arquivo <code>dados.json</code> ainda não foi gerado.<br>
+        Aguarde a primeira execução do GitHub Actions ou<br>dispare manualmente em
+        <strong>Actions → Atualizar Dados → Run workflow</strong>.</p>
+        <p style="color:#999;font-size:.8rem">${e.message}</p>
+        <button class="btn btn-outline-success mt-2" onclick="location.reload()">
+          🔄 Tentar novamente
+        </button>
+      </div>`;
+  }
+}
+
+// Atualiza a cada 5 minutos automaticamente
+window.addEventListener('DOMContentLoaded', () => {
+  carregar();
+  setInterval(carregar, 5 * 60 * 1000);
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
