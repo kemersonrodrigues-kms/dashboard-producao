@@ -1,0 +1,739 @@
+{
+  "ultima_atualizacao": "2026-07-04T18:22:08",
+  "periodo": {
+    "inicio": "30/06/2026",
+    "fim": "04/07/2026"
+  },
+  "abas": {
+    "Geral": {
+      "total_metros": 1160714,
+      "total_minutos": 51152,
+      "mh_medio": 1361,
+      "meta_total": 1250578,
+      "performance_pct": 92.8,
+      "por_maquina": [
+        {
+          "maquina": "TECNATRONIC 02",
+          "metros": 117040,
+          "minutos": 3036,
+          "mh": 2313,
+          "meta_mh": 1500,
+          "performance_pct": 154.2
+        },
+        {
+          "maquina": "TECNATRONIC 03",
+          "metros": 101790,
+          "minutos": 3711,
+          "mh": 1646,
+          "meta_mh": 1500,
+          "performance_pct": 109.7
+        },
+        {
+          "maquina": "12 - SPS2 - 350",
+          "metros": 79550,
+          "minutos": 2376,
+          "mh": 2009,
+          "meta_mh": 1800,
+          "performance_pct": 111.6
+        },
+        {
+          "maquina": "03 - ES3500",
+          "metros": 72500,
+          "minutos": 2691,
+          "mh": 1616,
+          "meta_mh": 1800,
+          "performance_pct": 89.8
+        },
+        {
+          "maquina": "06 - SUPERPRINT 350 (2)",
+          "metros": 65697,
+          "minutos": 2018,
+          "mh": 1953,
+          "meta_mh": 1800,
+          "performance_pct": 108.5
+        },
+        {
+          "maquina": "05 - SUPERPRINT 350",
+          "metros": 62050,
+          "minutos": 1847,
+          "mh": 2016,
+          "meta_mh": 1800,
+          "performance_pct": 112.0
+        },
+        {
+          "maquina": "10 - DIGITAL",
+          "metros": 59075,
+          "minutos": 2147,
+          "mh": 1651,
+          "meta_mh": 1500,
+          "performance_pct": 110.1
+        },
+        {
+          "maquina": "TECNATRONIC 04",
+          "metros": 58527,
+          "minutos": 2566,
+          "mh": 1369,
+          "meta_mh": 1500,
+          "performance_pct": 91.2
+        },
+        {
+          "maquina": "11 - OMET - FX 420",
+          "metros": 56000,
+          "minutos": 1268,
+          "mh": 2650,
+          "meta_mh": 1800,
+          "performance_pct": 147.2
+        },
+        {
+          "maquina": "08 - GGS FV",
+          "metros": 50000,
+          "minutos": 217,
+          "mh": 13825,
+          "meta_mh": 1500,
+          "performance_pct": 921.7
+        },
+        {
+          "maquina": "TECNATRONIC 01",
+          "metros": 49144,
+          "minutos": 2281,
+          "mh": 1293,
+          "meta_mh": 1500,
+          "performance_pct": 86.2
+        },
+        {
+          "maquina": "CORREÇÃO APONTAMENTO",
+          "metros": 45443,
+          "minutos": 1414,
+          "mh": 1928,
+          "meta_mh": 1500,
+          "performance_pct": 128.6
+        },
+        {
+          "maquina": "01 - MARKANDY 2200",
+          "metros": 44936,
+          "minutos": 1264,
+          "mh": 2133,
+          "meta_mh": 1800,
+          "performance_pct": 118.5
+        },
+        {
+          "maquina": "04 - SUPERPRINT 250",
+          "metros": 42401,
+          "minutos": 1879,
+          "mh": 1354,
+          "meta_mh": 1800,
+          "performance_pct": 75.2
+        },
+        {
+          "maquina": "09 - WINE TAMBOR CENTRAL",
+          "metros": 37150,
+          "minutos": 1265,
+          "mh": 1762,
+          "meta_mh": 1500,
+          "performance_pct": 117.5
+        },
+        {
+          "maquina": "14 - POLLY M370",
+          "metros": 29541,
+          "minutos": 2125,
+          "mh": 834,
+          "meta_mh": 800,
+          "performance_pct": 104.3
+        },
+        {
+          "maquina": "BERTEC 02",
+          "metros": 19508,
+          "minutos": 2871,
+          "mh": 408,
+          "meta_mh": 1500,
+          "performance_pct": 27.2
+        },
+        {
+          "maquina": "13 - KROMIA",
+          "metros": 19323,
+          "minutos": 1305,
+          "mh": 888,
+          "meta_mh": 1800,
+          "performance_pct": 49.4
+        },
+        {
+          "maquina": "DOBRADEIRA 01",
+          "metros": 16256,
+          "minutos": 1408,
+          "mh": 693,
+          "meta_mh": 1500,
+          "performance_pct": 46.2
+        },
+        {
+          "maquina": "R4 ETIRAMA",
+          "metros": 15765,
+          "minutos": 1097,
+          "mh": 862,
+          "meta_mh": 1500,
+          "performance_pct": 57.5
+        },
+        {
+          "maquina": "BERTEC 04",
+          "metros": 14996,
+          "minutos": 1707,
+          "mh": 527,
+          "meta_mh": 1500,
+          "performance_pct": 35.1
+        },
+        {
+          "maquina": "NÃO PROGRAMADAS",
+          "metros": 14960,
+          "minutos": 315,
+          "mh": 2850,
+          "meta_mh": 1500,
+          "performance_pct": 190.0
+        },
+        {
+          "maquina": "WEB TECHNIQUES",
+          "metros": 14208,
+          "minutos": 1091,
+          "mh": 781,
+          "meta_mh": 1500,
+          "performance_pct": 52.1
+        },
+        {
+          "maquina": "R4 ETIRAMA - 2",
+          "metros": 9849,
+          "minutos": 337,
+          "mh": 1754,
+          "meta_mh": 1500,
+          "performance_pct": 116.9
+        },
+        {
+          "maquina": "DOBRADEIRA 03",
+          "metros": 9652,
+          "minutos": 1201,
+          "mh": 482,
+          "meta_mh": 1500,
+          "performance_pct": 32.1
+        },
+        {
+          "maquina": "INSERT 250 01",
+          "metros": 9158,
+          "minutos": 1889,
+          "mh": 291,
+          "meta_mh": 300,
+          "performance_pct": 97.0
+        },
+        {
+          "maquina": "BERTEC 03",
+          "metros": 9154,
+          "minutos": 995,
+          "mh": 552,
+          "meta_mh": 1500,
+          "performance_pct": 36.8
+        },
+        {
+          "maquina": "INSERT 350 03",
+          "metros": 8655,
+          "minutos": 1171,
+          "mh": 443,
+          "meta_mh": 300,
+          "performance_pct": 147.8
+        },
+        {
+          "maquina": "BERTEC 01",
+          "metros": 8420,
+          "minutos": 1181,
+          "mh": 428,
+          "meta_mh": 1500,
+          "performance_pct": 28.5
+        },
+        {
+          "maquina": "INSERT 250 02",
+          "metros": 7370,
+          "minutos": 861,
+          "mh": 514,
+          "meta_mh": 300,
+          "performance_pct": 171.2
+        },
+        {
+          "maquina": "17 - SP4 - 420",
+          "metros": 6900,
+          "minutos": 350,
+          "mh": 1183,
+          "meta_mh": 1800,
+          "performance_pct": 65.7
+        },
+        {
+          "maquina": "DOBRADEIRA 02",
+          "metros": 3048,
+          "minutos": 638,
+          "mh": 287,
+          "meta_mh": 1500,
+          "performance_pct": 19.1
+        },
+        {
+          "maquina": "REBOBINADEIRA 01",
+          "metros": 1655,
+          "minutos": 136,
+          "mh": 730,
+          "meta_mh": 1500,
+          "performance_pct": 48.7
+        },
+        {
+          "maquina": "BANCADA",
+          "metros": 991,
+          "minutos": 494,
+          "mh": 120,
+          "meta_mh": 1500,
+          "performance_pct": 8.0
+        }
+      ],
+      "por_dia": [
+        {
+          "data": "2026-06-30",
+          "metros": 65153
+        },
+        {
+          "data": "2026-07-01",
+          "metros": 264723
+        },
+        {
+          "data": "2026-07-02",
+          "metros": 343268
+        },
+        {
+          "data": "2026-07-03",
+          "metros": 401198
+        },
+        {
+          "data": "2026-07-04",
+          "metros": 86372
+        }
+      ]
+    },
+    "Flexografia": {
+      "total_metros": 558536,
+      "total_minutos": 17055,
+      "mh_medio": 1965,
+      "meta_total": 501365,
+      "performance_pct": 111.4,
+      "por_maquina": [
+        {
+          "maquina": "12 - SPS2 - 350",
+          "metros": 79550,
+          "minutos": 2376,
+          "mh": 2009,
+          "meta_mh": 1800,
+          "performance_pct": 111.6
+        },
+        {
+          "maquina": "03 - ES3500",
+          "metros": 72500,
+          "minutos": 2691,
+          "mh": 1616,
+          "meta_mh": 1800,
+          "performance_pct": 89.8
+        },
+        {
+          "maquina": "06 - SUPERPRINT 350 (2)",
+          "metros": 65697,
+          "minutos": 2018,
+          "mh": 1953,
+          "meta_mh": 1800,
+          "performance_pct": 108.5
+        },
+        {
+          "maquina": "05 - SUPERPRINT 350",
+          "metros": 62050,
+          "minutos": 1847,
+          "mh": 2016,
+          "meta_mh": 1800,
+          "performance_pct": 112.0
+        },
+        {
+          "maquina": "11 - OMET - FX 420",
+          "metros": 56000,
+          "minutos": 1268,
+          "mh": 2650,
+          "meta_mh": 1800,
+          "performance_pct": 147.2
+        },
+        {
+          "maquina": "08 - GGS FV",
+          "metros": 50000,
+          "minutos": 217,
+          "mh": 13825,
+          "meta_mh": 1500,
+          "performance_pct": 921.7
+        },
+        {
+          "maquina": "01 - MARKANDY 2200",
+          "metros": 44936,
+          "minutos": 1264,
+          "mh": 2133,
+          "meta_mh": 1800,
+          "performance_pct": 118.5
+        },
+        {
+          "maquina": "04 - SUPERPRINT 250",
+          "metros": 42401,
+          "minutos": 1879,
+          "mh": 1354,
+          "meta_mh": 1800,
+          "performance_pct": 75.2
+        },
+        {
+          "maquina": "09 - WINE TAMBOR CENTRAL",
+          "metros": 37150,
+          "minutos": 1265,
+          "mh": 1762,
+          "meta_mh": 1500,
+          "performance_pct": 117.5
+        },
+        {
+          "maquina": "13 - KROMIA",
+          "metros": 19323,
+          "minutos": 1305,
+          "mh": 888,
+          "meta_mh": 1800,
+          "performance_pct": 49.4
+        },
+        {
+          "maquina": "NÃO PROGRAMADAS",
+          "metros": 14960,
+          "minutos": 315,
+          "mh": 2850,
+          "meta_mh": 1500,
+          "performance_pct": 190.0
+        },
+        {
+          "maquina": "10 - DIGITAL",
+          "metros": 7069,
+          "minutos": 260,
+          "mh": 1631,
+          "meta_mh": 1500,
+          "performance_pct": 108.8
+        },
+        {
+          "maquina": "17 - SP4 - 420",
+          "metros": 6900,
+          "minutos": 350,
+          "mh": 1183,
+          "meta_mh": 1800,
+          "performance_pct": 65.7
+        }
+      ],
+      "por_dia": [
+        {
+          "data": "2026-06-30",
+          "metros": 39500
+        },
+        {
+          "data": "2026-07-01",
+          "metros": 108487
+        },
+        {
+          "data": "2026-07-02",
+          "metros": 169090
+        },
+        {
+          "data": "2026-07-03",
+          "metros": 217649
+        },
+        {
+          "data": "2026-07-04",
+          "metros": 23810
+        }
+      ]
+    },
+    "Digital": {
+      "total_metros": 52006,
+      "total_minutos": 1887,
+      "mh_medio": 1654,
+      "meta_total": 47175,
+      "performance_pct": 110.2,
+      "por_maquina": [
+        {
+          "maquina": "10 - DIGITAL",
+          "metros": 52006,
+          "minutos": 1887,
+          "mh": 1654,
+          "meta_mh": 1500,
+          "performance_pct": 110.2
+        }
+      ],
+      "por_dia": [
+        {
+          "data": "2026-07-01",
+          "metros": 11868
+        },
+        {
+          "data": "2026-07-02",
+          "metros": 8560
+        },
+        {
+          "data": "2026-07-03",
+          "metros": 24118
+        },
+        {
+          "data": "2026-07-04",
+          "metros": 7460
+        }
+      ]
+    },
+    "Polly": {
+      "total_metros": 29541,
+      "total_minutos": 2125,
+      "mh_medio": 834,
+      "meta_total": 28333,
+      "performance_pct": 104.3,
+      "por_maquina": [
+        {
+          "maquina": "14 - POLLY M370",
+          "metros": 29541,
+          "minutos": 2125,
+          "mh": 834,
+          "meta_mh": 800,
+          "performance_pct": 104.3
+        }
+      ],
+      "por_dia": [
+        {
+          "data": "2026-06-30",
+          "metros": 5490
+        },
+        {
+          "data": "2026-07-01",
+          "metros": 10130
+        },
+        {
+          "data": "2026-07-02",
+          "metros": 6160
+        },
+        {
+          "data": "2026-07-03",
+          "metros": 7761
+        }
+      ]
+    },
+    "Insert": {
+      "total_metros": 25183,
+      "total_minutos": 3921,
+      "mh_medio": 385,
+      "meta_total": 19605,
+      "performance_pct": 128.5,
+      "por_maquina": [
+        {
+          "maquina": "INSERT 250 01",
+          "metros": 9158,
+          "minutos": 1889,
+          "mh": 291,
+          "meta_mh": 300,
+          "performance_pct": 97.0
+        },
+        {
+          "maquina": "INSERT 350 03",
+          "metros": 8655,
+          "minutos": 1171,
+          "mh": 443,
+          "meta_mh": 300,
+          "performance_pct": 147.8
+        },
+        {
+          "maquina": "INSERT 250 02",
+          "metros": 7370,
+          "minutos": 861,
+          "mh": 514,
+          "meta_mh": 300,
+          "performance_pct": 171.2
+        }
+      ],
+      "por_dia": [
+        {
+          "data": "2026-06-30",
+          "metros": 1571
+        },
+        {
+          "data": "2026-07-01",
+          "metros": 13138
+        },
+        {
+          "data": "2026-07-02",
+          "metros": 3939
+        },
+        {
+          "data": "2026-07-03",
+          "metros": 3038
+        },
+        {
+          "data": "2026-07-04",
+          "metros": 3497
+        }
+      ]
+    },
+    "Revisão": {
+      "total_metros": 495448,
+      "total_minutos": 26164,
+      "mh_medio": 1136,
+      "meta_total": 654100,
+      "performance_pct": 75.7,
+      "por_maquina": [
+        {
+          "maquina": "TECNATRONIC 02",
+          "metros": 117040,
+          "minutos": 3036,
+          "mh": 2313,
+          "meta_mh": 1500,
+          "performance_pct": 154.2
+        },
+        {
+          "maquina": "TECNATRONIC 03",
+          "metros": 101790,
+          "minutos": 3711,
+          "mh": 1646,
+          "meta_mh": 1500,
+          "performance_pct": 109.7
+        },
+        {
+          "maquina": "TECNATRONIC 04",
+          "metros": 58527,
+          "minutos": 2566,
+          "mh": 1369,
+          "meta_mh": 1500,
+          "performance_pct": 91.2
+        },
+        {
+          "maquina": "TECNATRONIC 01",
+          "metros": 49144,
+          "minutos": 2281,
+          "mh": 1293,
+          "meta_mh": 1500,
+          "performance_pct": 86.2
+        },
+        {
+          "maquina": "CORREÇÃO APONTAMENTO",
+          "metros": 45443,
+          "minutos": 1414,
+          "mh": 1928,
+          "meta_mh": 1500,
+          "performance_pct": 128.6
+        },
+        {
+          "maquina": "BERTEC 02",
+          "metros": 19508,
+          "minutos": 2871,
+          "mh": 408,
+          "meta_mh": 1500,
+          "performance_pct": 27.2
+        },
+        {
+          "maquina": "DOBRADEIRA 01",
+          "metros": 16256,
+          "minutos": 1408,
+          "mh": 693,
+          "meta_mh": 1500,
+          "performance_pct": 46.2
+        },
+        {
+          "maquina": "R4 ETIRAMA",
+          "metros": 15765,
+          "minutos": 1097,
+          "mh": 862,
+          "meta_mh": 1500,
+          "performance_pct": 57.5
+        },
+        {
+          "maquina": "BERTEC 04",
+          "metros": 14996,
+          "minutos": 1707,
+          "mh": 527,
+          "meta_mh": 1500,
+          "performance_pct": 35.1
+        },
+        {
+          "maquina": "WEB TECHNIQUES",
+          "metros": 14208,
+          "minutos": 1091,
+          "mh": 781,
+          "meta_mh": 1500,
+          "performance_pct": 52.1
+        },
+        {
+          "maquina": "R4 ETIRAMA - 2",
+          "metros": 9849,
+          "minutos": 337,
+          "mh": 1754,
+          "meta_mh": 1500,
+          "performance_pct": 116.9
+        },
+        {
+          "maquina": "DOBRADEIRA 03",
+          "metros": 9652,
+          "minutos": 1201,
+          "mh": 482,
+          "meta_mh": 1500,
+          "performance_pct": 32.1
+        },
+        {
+          "maquina": "BERTEC 03",
+          "metros": 9154,
+          "minutos": 995,
+          "mh": 552,
+          "meta_mh": 1500,
+          "performance_pct": 36.8
+        },
+        {
+          "maquina": "BERTEC 01",
+          "metros": 8420,
+          "minutos": 1181,
+          "mh": 428,
+          "meta_mh": 1500,
+          "performance_pct": 28.5
+        },
+        {
+          "maquina": "DOBRADEIRA 02",
+          "metros": 3048,
+          "minutos": 638,
+          "mh": 287,
+          "meta_mh": 1500,
+          "performance_pct": 19.1
+        },
+        {
+          "maquina": "REBOBINADEIRA 01",
+          "metros": 1655,
+          "minutos": 136,
+          "mh": 730,
+          "meta_mh": 1500,
+          "performance_pct": 48.7
+        },
+        {
+          "maquina": "BANCADA",
+          "metros": 991,
+          "minutos": 494,
+          "mh": 120,
+          "meta_mh": 1500,
+          "performance_pct": 8.0
+        }
+      ],
+      "por_dia": [
+        {
+          "data": "2026-06-30",
+          "metros": 18592
+        },
+        {
+          "data": "2026-07-01",
+          "metros": 121099
+        },
+        {
+          "data": "2026-07-02",
+          "metros": 155518
+        },
+        {
+          "data": "2026-07-03",
+          "metros": 148633
+        },
+        {
+          "data": "2026-07-04",
+          "metros": 51605
+        }
+      ]
+    }
+  }
+}
