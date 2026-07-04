@@ -167,8 +167,8 @@ function renderChart(key,aba){
     data:{labels,datasets:[
       {label:'Produzido (m/l)',data:metros,backgroundColor:barColors,borderColor:barBorders,borderWidth:1.5,borderRadius:5,borderSkipped:false,order:2,
         datalabels:{anchor:'end',align:'top',offset:3,font:{size:11,weight:'700'},
-          color:ctx=>cvH(ctx.parsed.y/avgMeta*100),
-          formatter:value=>{const pct=(value/avgMeta*100).toFixed(1);return [fmt(value)+' m',pct+'%'];},
+          color:ctx=>ctx.parsed?cvH(ctx.parsed.y/avgMeta*100):'#00cba0',
+          formatter:(value,ctx)=>{if(!ctx.parsed)return '';const pct=(value/avgMeta*100).toFixed(1);return [fmt(value)+' m',pct+'%'];},
           textStrokeColor:'rgba(0,0,0,.6)',textStrokeWidth:2}},
       {label:'Meta/dia est. ('+fmt(Math.round(avgMeta))+' m)',data:dias.map(()=>Math.round(avgMeta)),
         type:'line',borderColor:'rgba(120,160,200,.65)',backgroundColor:'transparent',
@@ -216,6 +216,6 @@ async function loadData(){
 }
 loadData();
 setInterval(loadData,5*60*1000);
-</script>
+ </script>
 </body>
 </html>
