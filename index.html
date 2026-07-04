@@ -1,477 +1,275 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard de Produção — Grow Label</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Painel de Controle de Produção — Grow Label</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --gl-green:  #1a7c3e;
-    --gl-green2: #22a052;
-    --gl-dark:   #0f4f27;
-    --gl-light:  #e8f5ee;
-    --gl-gray:   #6c757d;
-  }
-
-  body { background: #f4f6f9; font-family: 'Segoe UI', sans-serif; }
-
-  /* ── Header ────────────────────────────────────────────── */
-  .gl-header {
-    background: linear-gradient(135deg, var(--gl-dark), var(--gl-green));
-    color: #fff;
-    padding: 18px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 10px rgba(0,0,0,.3);
-  }
-  .gl-header h1 { font-size: 1.4rem; font-weight: 700; margin: 0; }
-  .gl-header .subtitle { font-size: .82rem; opacity: .8; margin-top: 2px; }
-  .badge-update {
-    font-size: .72rem;
-    background: rgba(255,255,255,.15);
-    border: 1px solid rgba(255,255,255,.3);
-    border-radius: 20px;
-    padding: 5px 12px;
-    text-align: right;
-  }
-
-  /* ── Tabs ───────────────────────────────────────────────── */
-  .nav-tabs { border-bottom: 2px solid var(--gl-green); }
-  .nav-tabs .nav-link {
-    color: var(--gl-gray);
-    font-weight: 600;
-    border: none;
-    border-bottom: 3px solid transparent;
-    padding: 10px 18px;
-    transition: .2s;
-  }
-  .nav-tabs .nav-link:hover  { color: var(--gl-green); }
-  .nav-tabs .nav-link.active {
-    color: var(--gl-green);
-    border-bottom: 3px solid var(--gl-green);
-    background: transparent;
-  }
-
-  /* ── KPI Cards ──────────────────────────────────────────── */
-  .kpi-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 18px 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07);
-    border-left: 5px solid var(--gl-green);
-    height: 100%;
-  }
-  .kpi-card .label { font-size: .72rem; color: var(--gl-gray); text-transform: uppercase; letter-spacing: .5px; }
-  .kpi-card .value { font-size: 1.9rem; font-weight: 700; color: #212529; line-height: 1.1; }
-  .kpi-card .sub   { font-size: .78rem; color: var(--gl-gray); margin-top: 4px; }
-  .kpi-card.warn  { border-left-color: #f0ad4e; }
-  .kpi-card.good  { border-left-color: #198754; }
-  .kpi-card.bad   { border-left-color: #dc3545; }
-
-  /* ── Charts ─────────────────────────────────────────────── */
-  .chart-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.07);
-  }
-  .chart-title { font-size: .85rem; font-weight: 700; color: #444; margin-bottom: 14px; }
-
-  /* ── Table ──────────────────────────────────────────────── */
-  .gl-table { font-size: .82rem; }
-  .gl-table thead th {
-    background: var(--gl-green);
-    color: #fff;
-    font-weight: 600;
-    border: none;
-    padding: 10px 12px;
-  }
-  .gl-table tbody tr:hover { background: var(--gl-light); }
-  .gl-table td { vertical-align: middle; padding: 8px 12px; }
-
-  /* ── Progress bar for performance ───────────────────────── */
-  .perf-bar {
-    height: 8px;
-    border-radius: 4px;
-    background: #e9ecef;
-    overflow: hidden;
-    min-width: 80px;
-  }
-  .perf-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width .4s;
-  }
-
-  /* ── Loading overlay ────────────────────────────────────── */
-  #loading {
-    position: fixed; inset: 0;
-    background: rgba(255,255,255,.9);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 9999;
-    flex-direction: column; gap: 14px;
-  }
-  .spinner-border { color: var(--gl-green); width: 3rem; height: 3rem; }
-
-  /* ── No-data ─────────────────────────────────────────────── */
-  .no-data {
-    text-align: center;
-    color: var(--gl-gray);
-    padding: 60px 20px;
-    font-size: .95rem;
-  }
+:root{--bg:#1b1f2e;--card:#1e2640;--card2:#252d45;--border:#2d3a52;--accent:#00b4d8;--green:#00cba0;--yellow:#f9ca24;--red:#ff6b6b;--text:#dde4f0;--muted:#7a8eaa;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;font-size:14px;min-height:100vh;}
+.hdr{background:#131927;border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-size:1rem;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:8px;}
+.hdr-sub{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.upd{background:var(--card2);border:1px solid var(--border);padding:4px 10px;border-radius:20px;font-size:.72rem;color:var(--muted);}
+.tabs{background:#131927;border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 16px;}
+.tabs::-webkit-scrollbar{height:0;}
+.tab{padding:11px 16px;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;font-size:.85rem;font-weight:500;transition:color .2s;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.content{padding:16px 20px;max-width:1440px;margin:0 auto;}
+.pg-title{font-size:1.25rem;font-weight:700;margin-bottom:2px;}
+.pg-sub{font-size:.78rem;color:var(--muted);margin-bottom:14px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.kpi-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.kpi-val{font-size:1.65rem;font-weight:700;line-height:1;}
+.kpi-unit{font-size:.7rem;color:var(--muted);margin-top:3px;}
+.kpi.a .kpi-val{color:var(--accent);}
+.kpi.g .kpi-val{color:var(--green);}
+.kpi.y .kpi-val{color:var(--yellow);}
+.kpi.r .kpi-val{color:var(--red);}
+.grp-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.grp-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;transition:border-color .2s;flex:1;min-width:110px;}
+.grp-card:hover{border-color:var(--accent);}
+.grp-name{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.grp-km{font-size:1.05rem;font-weight:700;}
+.grp-pct{font-size:.72rem;margin-top:2px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+@media(max-width:860px){.two-col{grid-template-columns:1fr;}}
+.cbox{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;}
+.cbox-t{font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.chart-wrap{position:relative;height:220px;}
+.mach-list{display:flex;flex-direction:column;gap:7px;max-height:250px;overflow-y:auto;padding-right:4px;}
+.mach-list::-webkit-scrollbar{width:3px;}
+.mach-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.mr{background:var(--card2);border-radius:5px;padding:8px 10px;}
+.mh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;}
+.mn{font-size:.8rem;font-weight:600;line-height:1.2;max-width:72%;}
+.mp{font-size:.88rem;font-weight:700;white-space:nowrap;}
+.mi{font-size:.68rem;color:var(--muted);margin-top:3px;}
+.bt{height:7px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden;margin-bottom:2px;}
+.bf{height:100%;border-radius:4px;transition:width .8s ease;}
+.bg{background:linear-gradient(90deg,#00cba0,#00b4d8);}
+.by{background:linear-gradient(90deg,#f9ca24,#e17055);}
+.br{background:linear-gradient(90deg,#ff6b6b,#d63031);}
+.tbl{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px;}
+.tbl table{width:100%;border-collapse:collapse;}
+.tbl th{background:#131927;padding:9px 13px;text-align:left;font-size:.69rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;}
+.tbl td{padding:8px 13px;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,.025);}
+.bdg{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700;}
+.bdg-g{background:rgba(0,203,160,.15);color:var(--green);}
+.bdg-y{background:rgba(249,202,36,.15);color:var(--yellow);}
+.bdg-r{background:rgba(255,107,107,.15);color:var(--red);}
+.loader{display:flex;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:12px;}
+.spin{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.panel{display:none;}.panel.active{display:block;}
 </style>
 </head>
 <body>
 
-<!-- Loading -->
-<div id="loading">
-  <div class="spinner-border" role="status"></div>
-  <div style="color:#444;font-weight:600">Carregando dados de produção...</div>
-</div>
-
-<!-- Header -->
-<div class="gl-header">
+<div class="hdr">
   <div>
-    <h1>🌿 Dashboard de Produção</h1>
-    <div class="subtitle">Grow Label — Relatório Automático</div>
+    <div class="hdr-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent)"><path d="M3 13h2v7H3zm4-5h2v12H7zm4-4h2v16h-2zm4 2h2v14h-2zm4-4h2v18h-2z"/></svg>
+      Painel de Controle de Produção
+    </div>
+    <div class="hdr-sub">Grow Label · Dashboard Industrial</div>
   </div>
-  <div class="badge-update">
-    <div id="periodo-label" style="font-weight:600">—</div>
-    <div id="atualizacao-label">Carregando...</div>
-  </div>
+  <div id="upd" class="upd"><i class="bi bi-clock me-1"></i>Carregando…</div>
 </div>
 
-<!-- Main content -->
-<div class="container-fluid px-3 py-3" id="main-content" style="display:none">
+<div class="tabs" id="tabs">
+  <div class="tab active" data-tab="Geral">Geral</div>
+  <div class="tab" data-tab="Flexografia">Flexografia</div>
+  <div class="tab" data-tab="Digital">Digital</div>
+  <div class="tab" data-tab="Polly">Polly</div>
+  <div class="tab" data-tab="Insert">Insert</div>
+  <div class="tab" data-tab="Revisão">Revisão</div>
+</div>
 
-  <!-- Tabs -->
-  <ul class="nav nav-tabs mb-3" id="abas">
-    <!-- gerado por JS -->
-  </ul>
+<div id="loader" class="loader">
+  <div class="spin"></div>
+  <div style="color:var(--muted);font-size:.88rem">Carregando dados de produção…</div>
+</div>
 
-  <!-- Tab panes -->
-  <div id="tab-content">
-    <!-- gerado por JS -->
-  </div>
-
+<div id="main" style="display:none">
+  <div id="p-Geral"       class="panel active content"></div>
+  <div id="p-Flexografia" class="panel content"></div>
+  <div id="p-Digital"     class="panel content"></div>
+  <div id="p-Polly"       class="panel content"></div>
+  <div id="p-Insert"      class="panel content"></div>
+  <div id="p-Revisão"     class="panel content"></div>
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────────
-// Utilitários
-// ─────────────────────────────────────────────────────────────
-const fmt  = n => Number(n).toLocaleString('pt-BR');
-const fmtK = n => n >= 1000 ? (n/1000).toFixed(1).replace('.',',') + ' km' : fmt(n) + ' m';
-const pct  = n => (n||0).toFixed(1).replace('.',',') + '%';
-const clrPerf = p => p >= 90 ? '#198754' : p >= 70 ? '#f0ad4e' : '#dc3545';
+const DATA_URL='https://raw.githubusercontent.com/kemersonrodrigues-kms/dashboard-producao/main/dados.json';
+const MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const SKIP=['CORREÇÃO APONTAMENTO','SEM MÁQUINA','MANUTENÇÃO'];
+let D=null,CH={};
 
-// Formata data "2024-07-04" → "04/07"
-const fmtDia = s => { const [a,m,d] = s.split('-'); return `${d}/${m}`; };
+const fmt=n=>Math.round(n).toLocaleString('pt-BR');
+const fmtKm=n=>(n/1000).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+' km';
+const fmtF=n=>n.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
+const cc=p=>p>=100?'g':p>=80?'y':'r';
+const cv=p=>p>=100?'var(--green)':p>=80?'var(--yellow)':'var(--red)';
+const bc=p=>p>=100?'bg':p>=80?'by':'br';
+const bdc=p=>p>=100?'bdg-g':p>=80?'bdg-y':'bdg-r';
 
-// ─────────────────────────────────────────────────────────────
-// Renderiza KPI Card
-// ─────────────────────────────────────────────────────────────
-function kpiCard(label, value, sub, extra='') {
-  return `
-    <div class="col-6 col-md-3 mb-3">
-      <div class="kpi-card ${extra}">
-        <div class="label">${label}</div>
-        <div class="value">${value}</div>
-        <div class="sub">${sub}</div>
-      </div>
-    </div>`;
+function mes(d){const dt=new Date(d.ultima_atualizacao);return MESES[dt.getMonth()]+' '+dt.getFullYear();}
+function fmtTs(ts){const d=new Date(ts);return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+function maqs(aba){return(aba.por_maquina||[]).filter(m=>!SKIP.some(s=>m.maquina.toUpperCase().includes(s)));}
+
+function kpis(aba,d){
+  const p=aba.performance_pct;
+  return`<div class="kpi-grid">
+    <div class="kpi a"><div class="kpi-lbl">Metros Produzidos</div><div class="kpi-val">${fmtKm(aba.total_metros)}</div><div class="kpi-unit">${fmt(aba.total_metros)} m/l no período</div></div>
+    <div class="kpi ${cc(p)}"><div class="kpi-lbl">Performance</div><div class="kpi-val">${fmtF(p)}%</div><div class="kpi-unit">produzido vs meta por m/h</div></div>
+    <div class="kpi"><div class="kpi-lbl">MH Médio</div><div class="kpi-val" style="color:var(--text)">${fmt(aba.mh_medio)}</div><div class="kpi-unit">metros / hora</div></div>
+    <div class="kpi"><div class="kpi-lbl">Período</div><div class="kpi-val" style="font-size:1rem;color:var(--text)">${d.periodo.inicio}</div><div class="kpi-unit">até ${d.periodo.fim}</div></div>
+  </div>`;
 }
 
-// ─────────────────────────────────────────────────────────────
-// Tabela de máquinas
-// ─────────────────────────────────────────────────────────────
-function renderTabela(maquinas) {
-  if (!maquinas || !maquinas.length) return '<div class="no-data">Sem dados para exibir</div>';
-  const rows = maquinas.map(m => {
-    const p = m.performance_pct || 0;
-    const cor = clrPerf(p);
-    const barW = Math.min(p, 100);
-    return `
-      <tr>
-        <td>${m.maquina}</td>
-        <td class="text-end">${fmtK(m.metros)}</td>
-        <td class="text-end">${fmt(m.mh)}</td>
-        <td class="text-end">${fmt(m.meta_mh)}</td>
-        <td>
-          <div class="d-flex align-items-center gap-2">
-            <div class="perf-bar" style="width:80px">
-              <div class="perf-fill" style="width:${barW}%;background:${cor}"></div>
-            </div>
-            <span style="color:${cor};font-weight:600;font-size:.8rem">${pct(p)}</span>
-          </div>
-        </td>
-      </tr>`;
-  }).join('');
-  return `
-    <table class="table table-sm table-hover gl-table">
-      <thead>
-        <tr>
-          <th>Máquina</th>
-          <th class="text-end">Metros</th>
-          <th class="text-end">M/h Real</th>
-          <th class="text-end">Meta M/h</th>
-          <th>Performance</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+function grpSummary(d){
+  const gs=[
+    {k:'Flexografia',l:'IMPRESSÃO',i:'bi-printer-fill'},
+    {k:'Digital',    l:'DIGITAL',  i:'bi-display'},
+    {k:'Insert',     l:'INSERT',   i:'bi-file-text'},
+    {k:'Polly',      l:'POLLY',    i:'bi-layers'},
+    {k:'Revisão',    l:'REVISÃO',  i:'bi-check-circle'},
+  ];
+  return`<div style="margin-bottom:14px">
+    <div style="font-size:.trem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Grupos de Produção</div>
+    <div class="grp-row">${gs.map(g=>{
+      const a=d.abas[g.k];if(!a)return'';const p=a.performance_pct;
+      return`<div class="grp-card" onclick="switchTab('${g.k}')">
+        <div class="grp-name"><i class="bi ${g.i} me-1"></i>${g.l}</div>
+        <div class="grp-km" style="color:${cv(p)}">${fmtKm(a.total_metros)}</div>
+        <div class="grp-pct" style="color:${cv(p)}">${fmtF(p)}% performance</div>
+      </div>`;
+    }).join('')}</div>
+  </div>`;
 }
 
-// ─────────────────────────────────────────────────────────────
-// Cria os gráficos (um por aba)
-// ─────────────────────────────────────────────────────────────
-const chartInstances = {};
+function dayChart(key,aba){
+  if(!aba.por_dia||!aba.por_dia.length)return'<div class="cbox" style="text-align:center;padding:40px;color:var(--muted)">Sem dados diários</div>';
+  return`<div class="cbox"><div class="cbox-t">Acumulado por Dia (m/l)</div><div class="chart-wrap"><canvas id="ch-${key}"></canvas></div></div>`;
+}
 
-function criarGraficoDia(canvasId, porDia) {
-  const ctx = document.getElementById(canvasId).getContext('2d');
-  if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
-  chartInstances[canvasId] = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: porDia.map(d => fmtDia(d.data)),
-      datasets: [{
-        label: 'Metros produzidos',
-        data: porDia.map(d => d.metros),
-        fill: true,
-        backgroundColor: 'rgba(26,124,62,.12)',
-        borderColor: '#1a7c3e',
-        pointBackgroundColor: '#1a7c3e',
-        tension: 0.35,
-        pointRadius: porDia.length <= 14 ? 4 : 2,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: {
-        callbacks: { label: ctx => ' ' + fmt(ctx.raw) + ' m' }
-      }},
-      scales: {
-        x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
-        y: { grid: { color: '#f0f0f0' }, ticks: {
-          font: { size: 11 },
-          callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v
-        }}
+function renderChart(key,aba){
+  const dias=aba.por_dia,ctx=document.getElementById('ch-'+key);
+  if(!ctx||!dias||!dias.length)return;
+  if(CH[key])CH[key].destroy();
+  const labels=dias.map(d=>{const p=d.data.split('-');return p[2]+'/'+p[1];});
+  const metros=dias.map(d=>d.metros);
+  const avg=aba.meta_total/dias.length;
+  CH[key]=new Chart(ctx,{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Produzido (m/l)',data:metros,
+       backgroundColor:metros.map(v=>v>=avg?'rgba(0,180,216,.85)':'rgba(0,180,216,.5)'),
+       borderRadius:4,borderSkipped:false,order:2},
+      {label:'Meta diária est.',data:dias.map(()=>Math.round(avg)),type:'line',
+       borderColor:'rgba(255,107,107,.85)',backgroundColor:'transparent',
+       borderWidth:2,borderDash:[5,3],pointRadius:3,
+       pointBackgroundColor:'rgba(255,107,107,.9)',tension:0,order:1}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:'#7a8eaa',font:{size:11},boxWidth:12}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)+' m'}}
+      },
+      scales:{
+        x:{ticks:{color:'#7a8eaa',font:{size:11}},grid:{color:'rgba(255,255,255,.04)'}},
+        y:{ticks:{color:'#7a8eaa',font:{size:11},callback:v=>fmt(v)},grid:{color:'rgba(255,255,255,.06)'}}
       }
     }
   });
 }
 
-function criarGraficoMaquinas(canvasId, maquinas) {
-  const ctx = document.getElementById(canvasId).getContext('2d');
-  if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
-  // Mostra até 12 máquinas
-  const top = maquinas.slice(0, 12);
-  const labels = top.map(m => {
-    // Abrevia: "04 - SUPERPRINT 250" → "04-SP 250"
-    return m.maquina.replace(/^(\d+)\s*-\s*/, '$1-').substring(0, 20);
-  });
-  const perf   = top.map(m => m.performance_pct || 0);
-  const colors = perf.map(p => clrPerf(p) + 'cc');
-
-  chartInstances[canvasId] = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Performance (%)',
-          data: perf,
-          backgroundColor: colors,
-          borderRadius: 4,
-        },
-        {
-          label: 'Meta (100%)',
-          data: top.map(() => 100),
-          type: 'line',
-          borderColor: '#dc354588',
-          borderDash: [5, 5],
-          pointRadius: 0,
-          fill: false,
-        }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } },
-                 tooltip: { callbacks: { label: c => ' ' + pct(c.raw) } } },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 35 } },
-        y: { grid: { color: '#f0f0f0' },
-             ticks: { font: { size: 11 }, callback: v => v + '%' },
-             suggestedMax: 110 }
-      }
-    }
-  });
+function machBars(aba){
+  const ms=maqs(aba);
+  if(!ms.length)return'<div class="cbox" style="text-align:center;padding:40px;color:var(--muted)">Sem dados por máquina</div>';
+  return`<div class="cbox"><div class="cbox-t">Produção por Máquina</div>
+    <div class="mach-list">${ms.map(m=>{
+      const p=m.performance_pct,w=Math.min(p,100);
+      const n=m.maquina.length>28?m.maquina.substring(0,26)+'…':m.maquina;
+      return`<div class="mr">
+        <div class="mh"><span class="mn">${n}</span><span class="mp" style="color:${cv(p)}">${fmtF(p)}%</span></div>
+        <div class="bt"><div class="bf ${bc(p)}" style="width:${w}%"></div></div>
+        <div class="mi">${fmt(m.metros)} m/l &nbsp;·&nbsp; MH: ${fmt(m.mh)} / ${fmt(m.meta_mh)}</div>
+      </div>`;
+    }).join('')}</div>
+  </div>`;
 }
 
-// ─────────────────────────────────────────────────────────────
-// Renderiza uma aba completa
-// ─────────────────────────────────────────────────────────────
-function renderAba(nomeAba, info) {
-  const p = info.performance_pct || 0;
-  const horas = ((info.total_minutos||0) / 60).toFixed(1).replace('.',',');
-  const classePerf = p >= 90 ? 'good' : p >= 70 ? 'warn' : (p > 0 ? 'bad' : '');
-  const abaSafe = nomeAba.replace(/[^a-zA-Z0-9]/g,'_');
-
-  return `
-    <!-- KPIs -->
-    <div class="row mb-3">
-      ${kpiCard('Total de Metros', fmtK(info.total_metros), 'produzidos no período')}
-      ${kpiCard('M/h Médio', fmt(info.mh_medio), 'metros por hora')}
-      ${kpiCard('Performance', pct(p), 'vs meta do período', classePerf)}
-      ${kpiCard('Horas Produtivas', horas+'h', 'registradas no período')}
-    </div>
-
-    <!-- Gráficos -->
-    <div class="row mb-3">
-      <div class="col-12 col-xl-6 mb-3 mb-xl-0">
-        <div class="chart-card" style="height:260px">
-          <div class="chart-title">📅 Metros por Dia</div>
-          ${info.por_dia && info.por_dia.length
-            ? `<canvas id="chart-dia-${abaSafe}" style="height:200px"></canvas>`
-            : '<div class="no-data">Sem dados diários</div>'}
-        </div>
-      </div>
-      <div class="col-12 col-xl-6">
-        <div class="chart-card" style="height:260px">
-          <div class="chart-title">🏭 Performance por Máquina</div>
-          ${info.por_maquina && info.por_maquina.length
-            ? `<canvas id="chart-maq-${abaSafe}" style="height:200px"></canvas>`
-            : '<div class="no-data">Sem dados por máquina</div>'}
-        </div>
-      </div>
-    </div>
-
-    <!-- Tabela -->
-    <div class="chart-card">
-      <div class="chart-title">📋 Detalhamento por Máquina</div>
-      <div class="table-responsive">
-        ${renderTabela(info.por_maquina)}
-      </div>
-    </div>
-  `;
+function detailTable(aba){
+  const ms=maqs(aba);if(!ms.length)return'';
+  return`<div class="tbl"><table>
+    <thead><tr><th>Máquina</th><th>Produzido (m/l)</th><th>Meta (m/l)</th><th>Vel. Atual (m/h)</th><th>Vel. Padrão (m/h)</th><th>Performance</th><th>Horas</th></tr></thead>
+    <tbody>${ms.map(m=>{
+      const p=m.performance_pct,me=Math.round(m.meta_mh*m.minutos/60),h=(m.minutos/60).toFixed(1);
+      return`<tr><td><strong>${m.maquina}</strong></td><td>${fmt(m.metros)}</td><td>${fmt(me)}</td><td>${fmt(m.mh)}</td><td>${fmt(m.meta_mh)}</td><td><span class="bdg ${bdc(p)}">${fmtF(p)}%</span></td><td>${h}h</td></tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
 }
 
-// ─────────────────────────────────────────────────────────────
-// Bootstrap das abas
-// ─────────────────────────────────────────────────────────────
-function initAbas(dados) {
-  const ABAS = Object.keys(dados.abas);
-  const navEl    = document.getElementById('abas');
-  const contEl   = document.getElementById('tab-content');
-  navEl.innerHTML = '';
-  contEl.innerHTML = '';
+const LBLS={Geral:'Geral',Flexografia:'Flexografia',Digital:'Digital',Polly:'Polly',Insert:'Insert — Bula',Revisão:'Revisão'};
 
-  ABAS.forEach((aba, i) => {
-    const abaSafe = aba.replace(/[^a-zA-Z0-9]/g,'_');
-    const info = dados.abas[aba];
-    const metros = info.total_metros || 0;
+function buildPanel(key,d){
+  const aba=d.abas[key];
+  if(!aba)return`<div class="loader"><div style="color:var(--muted)">Sem dados para esta aba</div></div>`;
+  let h=`<div class="pg-title">Painel de Controle de Produção — ${LBLS[key]||key}</div>
+    <div class="pg-sub">Monitoramento de desempenho industrial · ${mes(d)}</div>`;
+  h+=kpis(aba,d);
+  if(key==='Geral')h+=grpSummary(d);
+  h+=`<div class="two-col">${dayChart(key,aba)}${machBars(aba)}</div>`;
+  h+=detailTable(aba);
+  return h;
+}
 
-    // Nav item
-    const li = document.createElement('li');
-    li.className = 'nav-item';
-    li.innerHTML = `
-      <button class="nav-link ${i===0?'active':''}" data-bs-toggle="tab"
-              data-bs-target="#pane-${abaSafe}" type="button">
-        ${aba}
-        ${metros > 0 ? `<span class="badge ms-1" style="background:var(--gl-green);font-size:.65rem">
-          ${fmtK(metros)}</span>` : ''}
-      </button>`;
-    navEl.appendChild(li);
+function switchTab(key){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===key));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='p-'+key));
+  if(D)setTimeout(()=>renderChart(key,D.abas[key]),30);
+}
+document.getElementById('tabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab');if(t)switchTab(t.dataset.tab);
+});
 
-    // Pane
-    const pane = document.createElement('div');
-    pane.className = `tab-pane fade ${i===0?'show active':''}`;
-    pane.id = `pane-${abaSafe}`;
-    pane.innerHTML = renderAba(aba, info);
-    contEl.appendChild(pane);
-  });
-
-  // Desenhar gráficos da aba inicial
-  setTimeout(() => drawChartsForTab(ABAS[0], dados), 50);
-
-  // Ao trocar de aba, desenhar gráficos dessa aba
-  navEl.querySelectorAll('button[data-bs-toggle="tab"]').forEach(btn => {
-    btn.addEventListener('shown.bs.tab', () => {
-      const abaAtiva = btn.textContent.trim().split('\n')[0].trim();
-      drawChartsForTab(abaAtiva, dados);
+async function loadData(){
+  try{
+    const r=await fetch(DATA_URL+'?t='+Date.now());
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    D=await r.json();
+    document.getElementById('upd').innerHTML=`<i class="bi bi-clock me-1"></i>Atualizado: ${fmtTs(D.ultima_atualizacao)}`;
+    ['Geral','Flexografia','Digital','Polly','Insert','Revisão'].forEach(k=>{
+      const el=document.getElementById('p-'+k);
+      if(el)el.innerHTML=buildPanel(k,D);
     });
-  });
-}
-
-function drawChartsForTab(nomeAba, dados) {
-  const abaSafe = nomeAba.replace(/[^a-zA-Z0-9]/g,'_');
-  const info = dados.abas[nomeAba];
-  if (!info) return;
-  if (info.por_dia && info.por_dia.length) {
-    criarGraficoDia(`chart-dia-${abaSafe}`, info.por_dia);
-  }
-  if (info.por_maquina && info.por_maquina.length) {
-    criarGraficoMaquinas(`chart-maq-${abaSafe}`, info.por_maquina);
-  }
-}
-
-// ─────────────────────────────────────────────────────────────
-// Carga principal
-// ─────────────────────────────────────────────────────────────
-async function carregar() {
-  try {
-    const resp = await fetch('https://raw.githubusercontent.com/kemersonrodrigues-kms/dashboard-producao/main/dados.json?t=' + Date.now());
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const dados = await resp.json();
-
-    // Header info
-    const periodo = dados.periodo || {};
-    document.getElementById('periodo-label').textContent =
-      (periodo.inicio && periodo.fim)
-        ? `${periodo.inicio} → ${periodo.fim}`
-        : 'Período não disponível';
-
-    if (dados.ultima_atualizacao) {
-      const dt = new Date(dados.ultima_atualizacao);
-      document.getElementById('atualizacao-label').textContent =
-        'Atualizado: ' + dt.toLocaleString('pt-BR');
-    }
-
-    // Montar abas
-    initAbas(dados);
-
-    // Mostrar conteúdo
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('main-content').style.display = '';
-
-  } catch(e) {
-    document.getElementById('loading').innerHTML = `
-      <div style="text-align:center;padding:40px">
-        <div style="font-size:3rem">⚠️</div>
-        <h4 style="color:#dc3545;margin:16px 0 8px">Dados não disponíveis</h4>
-        <p style="color:#666">O arquivo <code>dados.json</code> ainda não foi gerado.<br>
-        Aguarde a primeira execução do GitHub Actions ou<br>dispare manualmente em
-        <strong>Actions → Atualizar Dados → Run workflow</strong>.</p>
-        <p style="color:#999;font-size:.8rem">${e.message}</p>
-        <button class="btn btn-outline-success mt-2" onclick="location.reload()">
-          🔄 Tentar novamente
+    document.getElementById('loader').style.display='none';
+    document.getElementById('main').style.display='block';
+    renderChart('Geral',D.abas['Geral']);
+  }catch(e){
+    document.getElementById('loader').innerHTML=`
+      <div style="text-align:center">
+        <i class="bi bi-exclamation-triangle" style="font-size:2.5rem;color:var(--red)"></i>
+        <p style="margin-top:12px;color:var(--red)">Erro ao carregar dados</p>
+        <p style="color:var(--muted);font-size:.8rem;margin-top:4px">${e.message}</p>
+        <button onclick="loadData()" style="margin-top:14px;background:var(--accent);color:#000;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-weight:600">
+          <i class="bi bi-arrow-clockwise me-1"></i>Tentar novamente
         </button>
       </div>`;
   }
 }
-
-// Atualiza a cada 5 minutos automaticamente
-window.addEventListener('DOMContentLoaded', () => {
-  carregar();
-  setInterval(carregar, 5 * 60 * 1000);
-});
+loadData();
+setInterval(loadData,5*60*1000);
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
