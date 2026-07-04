@@ -425,7 +425,7 @@ function drawChartsForTab(nomeAba, dados) {
 // ─────────────────────────────────────────────────────────────
 async function carregar() {
   try {
-    const resp = await fetch('dados.json?t=' + Date.now());
+    const resp = await fetch('https://raw.githubusercontent.com/kemersonrodrigues-kms/dashboard-producao/main/dados.json?t=' + Date.now());
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     const dados = await resp.json();
 
