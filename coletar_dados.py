@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 """
 coletar_dados.py — GitHub Actions
-Baixa o relatório de produção do sistema i4 (Grow Label) e gera dados.json.
+Baixa o relatório de produção do sistema i4 (Grow Label) e atualiza dados.json.
 
-Diferenças em relação ao RELATORIO_V15:
-  - Credenciais via variáveis de ambiente I4_USUARIO e I4_SENHA
-  - Pasta de downloads em /tmp (sem dependências de OneDrive)
-  - Após download processa o Excel e salva dados.json no repositório
-  - Sem input() nem manipulação de arquivos para OneDrive
+Nova estrutura: dados.json com histórico mensal preservado.
+Credenciais via variáveis de ambiente I4_USUARIO e I4_SENHA (GitHub Secrets).
 """
 
 import os, sys, time, json, shutil, logging, tempfile, traceback
@@ -39,20 +36,21 @@ HORA_FIM        = "23:59"
 
 # Mapeamento grupo i4 → aba do dashboard
 GRUPO_PARA_ABA = {
-    "IMPRESSÃO":          "Flexografia",
-    "BRANCA":             "Flexografia",
-    "ETIRAMA 250 UV":     "Flexografia",
-    "ETIRAMA 350":        "Flexografia",
-    "LAMINAÇÃO":          "Flexografia",
-    "GERAL":              "Flexografia",
-    "DIGITAL":            "Digital",
-    "REVISÃO":            "Revisão",
-    "REVISÃO IDEMITSU":   "Revisão",
-    "BULA":               "Revisão",
-    "SLEEVE":             "Outros",
-    "CORTE":              "Outros",
-    "GUILHOTINA":         "Outros",
-    "IMPRESSÃO OFFSET":   "Outros",
+    "IMPRESSÃO":        "Flexografia",
+    "BRANCA":           "Flexografia",
+    "ETIRAMA 250 UV":   "Flexografia",
+    "ETIRAMA 350":      "Flexografia",
+    "LAMINAÇÃO":        "Flexografia",
+    "GERAL":            "Flexografia",
+    "DIGITAL":          "Digital",
+    "POLLY M370":       "Polly",
+    "REVISÃO":          "Revisão",
+    "REVISÃO IDEMITSU": "Revisão",
+    "BULA":             "Revisão",
+    "SLEEVE":           "Outros",
+    "CORTE":            "Outros",
+    "GUILHOTINA":       "Outros",
+    "IMPRESSÃO OFFSET": "Outros",
 }
 
 # Exceções por nome exato de máquina
@@ -61,6 +59,13 @@ MAQUINA_PARA_ABA = {
     "INSERT 250 01":   "Insert",
     "INSERT 250 02":   "Insert",
     "INSERT 350 03":   "Insert",
+}
+
+# Labels dos meses
+MESES_PT = {
+    1: "Janeiro", 2: "Fevereiro", 3: "Março",   4: "Abril",
+    5: "Maio",    6: "Junho",     7: "Julho",    8: "Agosto",
+    9: "Setembro",10:"Outubro",  11: "Novembro",12: "Dezembro",
 }
 
 # ─────────────────────────────────────────────────────────────
@@ -76,7 +81,7 @@ log = logging.info
 
 
 # ─────────────────────────────────────────────────────────────
-# HELPERS DE DOWNLOAD
+# HELPERS SELENIUM
 # ─────────────────────────────────────────────────────────────
 def calcular_periodo_mes_atual():
     hoje = datetime.now()
@@ -196,35 +201,29 @@ def clicar_filtrar(driver):
 
 
 def aguardar_e_exportar(driver, timeout=180):
-    log("   Aguardando resultado (popup ou tabela)...")
+    log("   Aguardando resultado...")
     inicio = time.time()
     cenario = None
 
-    # Fase 1: aguarda popup "Gerar Planilha" por 20s
     while time.time() - inicio < 20:
         for el in driver.find_elements(By.XPATH, "//button[contains(text(),'Gerar Planilha')]"):
             if el.is_displayed():
-                cenario = "popup"
-                break
-        if cenario:
-            break
+                cenario = "popup"; break
+        if cenario: break
         time.sleep(1)
 
-    # Fase 2: fallback para export da tabela
     if not cenario:
         log("   Popup não apareceu — verificando tabela...")
         while time.time() - inicio < timeout:
             for btn_id in ("data_tables_buttons4", "data_tables_buttons4_stick"):
                 for b in driver.find_elements(By.ID, btn_id):
                     if b.is_displayed() and b.is_enabled():
-                        cenario = "tabela"
-                        break
-            if cenario:
-                break
+                        cenario = "tabela"; break
+            if cenario: break
             time.sleep(2)
 
     if not cenario:
-        raise Exception("Nenhum método de exportação encontrado após filtro.")
+        raise Exception("Nenhum método de exportação encontrado.")
 
     log(f"   Cenário: {cenario.upper()}")
 
@@ -236,18 +235,15 @@ def aguardar_e_exportar(driver, timeout=180):
         time.sleep(0.5)
         driver.execute_script("arguments[0].click();", btn)
     else:
-        # Aguarda dados carregarem
         time.sleep(5)
         botao_print = None
         for btn_id in ("data_tables_buttons4", "data_tables_buttons4_stick"):
             for el in driver.find_elements(By.ID, btn_id):
                 if el.is_displayed() and el.is_enabled():
-                    botao_print = el
-                    break
-            if botao_print:
-                break
+                    botao_print = el; break
+            if botao_print: break
         if botao_print is None:
-            raise Exception("Botão de exportação da tabela não encontrado.")
+            raise Exception("Botão de exportação não encontrado.")
         driver.execute_script("arguments[0].scrollIntoView({block:'center'});", botao_print)
         time.sleep(0.5)
         driver.execute_script("arguments[0].click();", botao_print)
@@ -289,39 +285,28 @@ def validar_excel(caminho):
     tamanho_kb = os.path.getsize(caminho) / 1024
     log(f"   Tamanho: {tamanho_kb:.1f} KB")
     if tamanho_kb < 8.5:
-        log("   AVISO: arquivo muito pequeno (provavelmente vazio)!")
+        log("   AVISO: arquivo muito pequeno!")
         return False
     return True
 
 
 # ─────────────────────────────────────────────────────────────
-# PROCESSAMENTO: Excel → dados.json
+# PROCESSAMENTO: Excel → estrutura de mês
 # ─────────────────────────────────────────────────────────────
 def extrair_hora(val):
-    """Extrai número da hora de um campo Hora do Excel."""
-    if val is None:
-        return 12  # padrão: não é madrugada
+    if val is None: return 12
     try:
-        if hasattr(val, 'hour'):
-            return val.hour
+        if hasattr(val, 'hour'): return val.hour
         s = str(val)
-        if ' ' in s:
-            # "30/12/1899 14:30:00" → pega parte de tempo
-            s = s.split(' ')[-1]
-        if ':' in s:
-            return int(s.split(':')[0])
+        if ' ' in s: s = s.split(' ')[-1]
+        if ':' in s: return int(s.split(':')[0])
     except Exception:
         pass
     return 12
 
 
 def calc_data_turno(data_val, hora_val):
-    """
-    Corrige a data para turnos noturnos.
-    Registros com hora 00:00–06:59 pertencem ao turno do dia anterior.
-    """
     hora = extrair_hora(hora_val)
-    # Normalizar data
     if isinstance(data_val, datetime):
         d = data_val.date()
     elif isinstance(data_val, date):
@@ -331,14 +316,10 @@ def calc_data_turno(data_val, hora_val):
             d = pd.to_datetime(str(data_val)).date()
         except Exception:
             return date.today()
-    # Madrugada → turno do dia anterior
-    if 0 <= hora < 7:
-        return d - timedelta(days=1)
-    return d
+    return d - timedelta(days=1) if 0 <= hora < 7 else d
 
 
 def get_aba(grupo, maquina):
-    """Determina a aba do dashboard para uma linha."""
     maq = str(maquina).strip()
     if maq in MAQUINA_PARA_ABA:
         return MAQUINA_PARA_ABA[maq]
@@ -347,7 +328,6 @@ def get_aba(grupo, maquina):
 
 
 def get_meta_mh(maquina, config_maquinas):
-    """Retorna a meta m/h para a máquina, usando correspondência parcial."""
     maq = str(maquina).strip()
     if maq in config_maquinas:
         return config_maquinas[maq].get("meta_mh", 1500)
@@ -362,7 +342,6 @@ def processar_excel(caminho_excel, config):
     df = pd.read_excel(caminho_excel, engine='openpyxl')
     log(f"   {len(df)} linhas, {len(df.columns)} colunas")
 
-    # ── Colunas ────────────────────────────────────────────
     COL_MAQUINA  = "Máquina"
     COL_OPERACAO = "Operação"
     COL_DATA     = "Data de Início"
@@ -370,24 +349,22 @@ def processar_excel(caminho_excel, config):
     COL_METROS   = "Metros Lineares"
     COL_MINUTOS  = "Total Minutos"
     COL_GRUPO    = "Grupo de Máquinas"
-    COL_OPERADOR = "Operador"
-    COL_CLIENTE  = "Cliente"
 
     colunas = set(df.columns)
 
-    # ── Filtrar produções reais (002 e 003) ────────────────
+    # Filtrar somente PRODUÇÃO (002) — não inclui revisão para métricas de metros
     if COL_OPERACAO in colunas:
-        mask = df[COL_OPERACAO].fillna("").str.match(r"00[23]")
+        mask = df[COL_OPERACAO].fillna("").str.startswith("002")
         df_prod = df[mask].copy()
     else:
         df_prod = df.copy()
-    log(f"   Linhas produção/revisão: {len(df_prod)}")
+    log(f"   Linhas de produção: {len(df_prod)}")
 
     if len(df_prod) == 0:
-        log("   AVISO: nenhuma linha de produção encontrada!")
+        log("   AVISO: nenhuma linha de produção!")
         df_prod = df.copy()
 
-    # ── Data Turno ─────────────────────────────────────────
+    # Data turno
     if COL_DATA in colunas and COL_HORA in colunas:
         df_prod["_data_turno"] = [
             calc_data_turno(row[COL_DATA], row[COL_HORA])
@@ -398,7 +375,7 @@ def processar_excel(caminho_excel, config):
     else:
         df_prod["_data_turno"] = date.today()
 
-    # ── Aba do dashboard ───────────────────────────────────
+    # Aba do dashboard
     if COL_GRUPO in colunas and COL_MAQUINA in colunas:
         df_prod["_aba"] = [
             get_aba(row.get(COL_GRUPO, ""), row.get(COL_MAQUINA, ""))
@@ -409,7 +386,6 @@ def processar_excel(caminho_excel, config):
     else:
         df_prod["_aba"] = "Outros"
 
-    # ── Métricas numéricas ─────────────────────────────────
     def to_float(val):
         try:
             v = float(val)
@@ -420,35 +396,21 @@ def processar_excel(caminho_excel, config):
     df_prod["_metros"]  = df_prod[COL_METROS].apply(to_float)  if COL_METROS  in colunas else 0.0
     df_prod["_minutos"] = df_prod[COL_MINUTOS].apply(to_float) if COL_MINUTOS in colunas else 0.0
 
-    # ── Config de máquinas ─────────────────────────────────
+    # Filtrar apenas metros > 0
+    df_prod = df_prod[df_prod["_metros"] > 0]
+
     config_maquinas = {m["maquina"]: m for m in config.get("maquinas", [])}
 
     ABAS = ["Geral", "Flexografia", "Digital", "Polly", "Insert", "Revisão"]
 
-    resultado = {
-        "ultima_atualizacao": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
-        "periodo": {
-            "inicio": "",
-            "fim":    ""
-        },
-        "abas": {}
-    }
+    # Datas disponíveis (para por_dia das máquinas)
+    todas_datas = sorted(df_prod["_data_turno"].dropna().unique())
+    todas_datas_str = [d.strftime("%Y-%m-%d") if hasattr(d, "strftime") else str(d) for d in todas_datas]
 
-    # Período
-    datas_validas = df_prod["_data_turno"].dropna()
-    if len(datas_validas):
-        dmin = min(datas_validas)
-        dmax = max(datas_validas)
-        resultado["periodo"]["inicio"] = dmin.strftime("%d/%m/%Y") if hasattr(dmin, "strftime") else str(dmin)
-        resultado["periodo"]["fim"]    = dmax.strftime("%d/%m/%Y") if hasattr(dmax, "strftime") else str(dmax)
+    resultado_abas = {}
 
-    # ── Por aba ────────────────────────────────────────────
     for aba in ABAS:
         df_aba = df_prod if aba == "Geral" else df_prod[df_prod["_aba"] == aba]
-
-        total_metros  = df_aba["_metros"].sum()
-        total_minutos = df_aba["_minutos"].sum()
-        mh_medio      = (total_metros / total_minutos * 60) if total_minutos > 0 else 0
 
         # Por máquina
         por_maquina = []
@@ -458,17 +420,33 @@ def processar_excel(caminho_excel, config):
                 m_minutos = grp["_minutos"].sum()
                 meta      = get_meta_mh(maq, config_maquinas)
                 mh        = (m_metros / m_minutos * 60) if m_minutos > 0 else 0
+                meta_metros = round(meta * m_minutos / 60)
+                perf_pct  = round((m_metros / meta_metros * 100) if meta_metros > 0 else 0, 1)
+
+                # Por dia desta máquina
+                por_dia_maq = []
+                maq_por_dia = grp.groupby("_data_turno")["_metros"].sum()
+                for dt_str in todas_datas_str:
+                    try:
+                        dt_key = date.fromisoformat(dt_str)
+                    except Exception:
+                        dt_key = dt_str
+                    metros_dia = float(maq_por_dia.get(dt_key, 0))
+                    por_dia_maq.append({"data": dt_str, "metros": round(metros_dia)})
+
                 por_maquina.append({
                     "maquina":         str(maq),
                     "metros":          round(m_metros),
                     "minutos":         round(m_minutos),
                     "mh":              round(mh),
                     "meta_mh":         meta,
-                    "performance_pct": round((mh / meta * 100) if meta > 0 else 0, 1)
+                    "meta_metros":     meta_metros,
+                    "performance_pct": perf_pct,
+                    "por_dia":         por_dia_maq
                 })
             por_maquina.sort(key=lambda x: x["metros"], reverse=True)
 
-        # Por dia
+        # Por dia (aba total)
         por_dia = []
         if len(df_aba):
             for dia, grp_dia in df_aba.groupby("_data_turno", sort=True):
@@ -478,26 +456,35 @@ def processar_excel(caminho_excel, config):
                     "metros": round(grp_dia["_metros"].sum())
                 })
 
-        # Meta agregada da aba
-        meta_total = 0
-        if COL_MAQUINA in colunas and len(df_aba) and len(por_maquina):
-            meta_total = sum(
-                p["meta_mh"] * p["minutos"] / 60
-                for p in por_maquina
-                if p["minutos"] > 0
-            )
+        total_metros  = df_aba["_metros"].sum()
+        total_minutos = df_aba["_minutos"].sum()
+        mh_medio      = (total_metros / total_minutos * 60) if total_minutos > 0 else 0
+        meta_total    = sum(p["meta_metros"] for p in por_maquina)
+        perf_geral    = round((total_metros / meta_total * 100) if meta_total > 0 else 0, 1)
 
-        resultado["abas"][aba] = {
+        resultado_abas[aba] = {
             "total_metros":    round(total_metros),
             "total_minutos":   round(total_minutos),
             "mh_medio":        round(mh_medio),
             "meta_total":      round(meta_total),
-            "performance_pct": round((total_metros / meta_total * 100) if meta_total > 0 else 0, 1),
-            "por_maquina":     por_maquina,
-            "por_dia":         por_dia
+            "performance_pct": perf_geral,
+            "por_dia":         por_dia,
+            "por_maquina":     por_maquina
         }
 
-    return resultado
+    # Período
+    datas_validas = df_prod["_data_turno"].dropna()
+    periodo_ini = periodo_fim = ""
+    if len(datas_validas):
+        dmin = min(datas_validas)
+        dmax = max(datas_validas)
+        periodo_ini = dmin.strftime("%d/%m/%Y") if hasattr(dmin, "strftime") else str(dmin)
+        periodo_fim = dmax.strftime("%d/%m/%Y") if hasattr(dmax, "strftime") else str(dmax)
+
+    return {
+        "periodo": {"inicio": periodo_ini, "fim": periodo_fim},
+        "abas":    resultado_abas
+    }
 
 
 # ─────────────────────────────────────────────────────────────
@@ -520,7 +507,6 @@ def baixar_excel():
             driver = configurar_navegador(headless=headless)
             fazer_login(driver)
             selecionar_empresa(driver)
-
             snap = snapshot()
 
             log("Acessando relatório...")
@@ -540,10 +526,8 @@ def baixar_excel():
             traceback.print_exc()
         finally:
             if driver:
-                try:
-                    driver.quit()
-                except Exception:
-                    pass
+                try: driver.quit()
+                except Exception: pass
     return None
 
 
@@ -570,27 +554,52 @@ def main():
 
     # Processar
     try:
-        dados = processar_excel(caminho_excel, config)
+        novo_mes = processar_excel(caminho_excel, config)
     except Exception as e:
         log(f"\nERRO ao processar Excel: {e}")
         traceback.print_exc()
         sys.exit(1)
 
-    # Salvar dados.json
+    # ── Carregar dados.json existente (preservar histórico) ──
     output = Path(__file__).parent / "dados.json"
+    if output.exists():
+        try:
+            dados = json.loads(output.read_text(encoding="utf-8"))
+        except Exception:
+            dados = {"meses": {}, "meses_disponiveis": []}
+    else:
+        dados = {"meses": {}, "meses_disponiveis": []}
+
+    if "meses" not in dados:
+        dados["meses"] = {}
+
+    # Chave do mês atual (YYYY-MM)
+    hoje = datetime.now()
+    chave_mes = hoje.strftime("%Y-%m")
+    label_mes = f"{MESES_PT[hoje.month]} {hoje.year}"
+
+    # Atualizar apenas o mês atual
+    dados["meses"][chave_mes] = {
+        "label":   label_mes,
+        **novo_mes
+    }
+
+    # Atualizar lista de meses disponíveis
+    dados["meses_disponiveis"] = sorted(dados["meses"].keys())
+    dados["ultima_atualizacao"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+
+    # Salvar
     output.write_text(
-        json.dumps(dados, ensure_ascii=False, indent=2, default=str),
+        json.dumps(dados, ensure_ascii=False, separators=(',', ':'), default=str),
         encoding="utf-8"
     )
 
-    log(f"\n✅ dados.json salvo com sucesso!")
+    log(f"\n✅ dados.json atualizado!")
+    log(f"   Mês atual: {chave_mes} ({label_mes})")
+    log(f"   Meses disponíveis: {dados['meses_disponiveis']}")
     log(f"   Atualização: {dados['ultima_atualizacao']}")
-    log(f"   Período: {dados['periodo']['inicio']} → {dados['periodo']['fim']}")
-    for aba, info in dados["abas"].items():
-        log(f"   {aba:12s}: {info['total_metros']:>10,.0f} metros")
 
-    sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
+    aba_geral = novo_mes["abas"].get("Geral", {})
+    log(f"   Total metros: {aba_geral.get('total_metros',0):>10,.0f} M/L")
+    log(f"   Meta total:   {aba_geral.get('meta_total',0):>10,.0f} M/L")
+    log(f"   Perfo
