@@ -19,81 +19,85 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 
 /* ── Header ── */
 #hdr{background:var(--bg2);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:10px;padding:0 14px;flex-shrink:0;height:54px;
-  flex-wrap:wrap;overflow:hidden}
-#logo{font-size:15px;font-weight:800;color:var(--accent);white-space:nowrap;flex-shrink:0}
-.sep{width:1px;height:24px;background:var(--border);flex-shrink:0}
+  display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;height:50px;flex-wrap:nowrap}
+#logo{font-size:14px;font-weight:800;color:var(--accent);white-space:nowrap;flex-shrink:0}
+.sep{width:1px;height:22px;background:var(--border);flex-shrink:0}
 .hl{color:var(--dim);font-size:11px;white-space:nowrap;flex-shrink:0}
 select,input[type=date]{
   background:var(--bg3);color:var(--text);border:1px solid var(--border);
-  border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;min-width:0}
+  border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;flex-shrink:0}
 select:focus,input:focus{outline:none;border-color:var(--accent)}
 .hbtn{background:var(--bg3);color:var(--dim);border:1px solid var(--border);
-  border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;
+  border-radius:6px;padding:3px 9px;font-size:11px;cursor:pointer;
   transition:.15s;white-space:nowrap;flex-shrink:0}
 .hbtn:hover{color:var(--accent);border-color:var(--accent)}
-.hsp{flex:1}
-#ua{color:var(--dim);font-size:11px;white-space:nowrap;flex-shrink:0;text-align:right}
-#ua b{color:var(--text)}
+.hsp{flex:1;min-width:4px}
+#ua{color:var(--dim);font-size:10px;white-space:nowrap;flex-shrink:0;text-align:right}
+#ua b{color:var(--accent)}
+#ua span{display:block;font-size:9px}
 
 /* ── Tabs ── */
 #tabs{background:var(--bg2);display:flex;align-items:center;gap:2px;
-  padding:0 10px;border-bottom:1px solid var(--border);flex-shrink:0;
-  height:40px;overflow-x:auto;overflow-y:hidden}
+  padding:0 8px;border-bottom:1px solid var(--border);flex-shrink:0;
+  height:36px;overflow-x:auto;overflow-y:hidden}
 #tabs::-webkit-scrollbar{height:0}
-.tab{padding:5px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:500;
+.tab{padding:4px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:500;
   color:var(--dim);transition:.15s;border:none;background:transparent;white-space:nowrap;flex-shrink:0}
 .tab:hover{color:var(--text);background:var(--bg3)}
 .tab.active{color:var(--accent);background:rgba(0,203,160,.13);font-weight:700}
 
 /* ── Content ── */
-#cont{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:8px;padding:8px;min-height:0}
+#cont{flex:1;overflow:hidden;display:grid;
+  grid-template-rows:auto 1fr auto;
+  gap:6px;padding:6px;min-height:0}
 
 /* ── KPI row ── */
-#krow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex-shrink:0}
+#krow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .kc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
-  padding:10px 14px;display:flex;flex-direction:column;min-width:0}
-.kl{color:var(--dim);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
-.kv{font-size:18px;font-weight:800;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ks{font-size:10px;color:var(--dim);margin-top:3px}
+  padding:9px 13px;display:flex;flex-direction:column;min-width:0}
+.kl{color:var(--dim);font-size:10px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.kv{font-size:17px;font-weight:800;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ks{font-size:10px;color:var(--dim);margin-top:2px}
 
 /* ── Charts row ── */
-#chart-row{display:grid;grid-template-columns:3fr 2fr;gap:8px;flex:1 1 0;min-height:0}
+#chart-row{display:grid;grid-template-columns:3fr 2fr;gap:6px;min-height:0;overflow:hidden}
 .cc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
-  display:flex;flex-direction:column;padding:10px;min-height:0;overflow:hidden}
+  display:flex;flex-direction:column;padding:8px;min-height:0;overflow:hidden}
 .ct{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;
-  letter-spacing:.5px;margin-bottom:8px;flex-shrink:0}
+  letter-spacing:.4px;margin-bottom:6px;flex-shrink:0}
 .cw{flex:1;position:relative;min-height:0}
 canvas{display:block;width:100%!important;height:100%!important}
 
-/* ── Machine performance row ── */
-#maq-section{flex-shrink:0;background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--r);padding:10px;display:flex;flex-direction:column;
-  max-height:36vh;min-height:120px}
-#maq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:6px;overflow-y:auto;flex:1;padding-right:2px}
+/* ── Machine performance section ── */
+#maq-section{background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r);padding:8px;display:flex;flex-direction:column;
+  min-height:0;overflow:hidden;max-height:34vh}
+
+#maq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:5px;overflow-y:auto;flex:1;padding-right:2px;align-content:start}
 #maq-grid::-webkit-scrollbar{width:4px}
 #maq-grid::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px}
 
 /* ── Machine card ── */
-.mq{background:var(--bg3);border-radius:8px;padding:8px 10px;
+.mq{background:var(--bg3);border-radius:8px;padding:7px 10px;
   display:flex;flex-direction:column;gap:5px;cursor:pointer;transition:.15s;
   border:1px solid transparent}
 .mq:hover{border-color:rgba(255,255,255,0.1)}
-.mq.sel{border-color:var(--accent)!important}
-.mn{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mq.sel{border-color:var(--accent)!important;background:rgba(0,203,160,.07)}
+.mn{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
 
-/* Progress bar */
-.mbar-wrap{position:relative;height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:visible}
-.mbar-fill{position:absolute;left:0;top:0;height:100%;border-radius:5px;transition:.4s}
-.mbar-meta{position:absolute;top:-3px;width:2px;height:16px;background:rgba(255,255,255,0.55);border-radius:1px;z-index:2}
-.mbar-meta::after{content:attr(data-label);position:absolute;top:-16px;left:50%;transform:translateX(-50%);
-  font-size:8px;color:var(--dim);white-space:nowrap;pointer-events:none}
+/* ── Double bar: produzido vs meta ── */
+.dbar-wrap{display:flex;flex-direction:column;gap:3px}
 
-.mvals{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;gap:4px}
-.mprod{font-weight:700;white-space:nowrap}
-.mmeta{color:var(--dim);white-space:nowrap}
-.mpct{font-size:12px;font-weight:800;white-space:nowrap;flex-shrink:0}
+.dbar-row{display:flex;align-items:center;gap:5px;font-size:9px}
+.dbar-lbl{width:52px;flex-shrink:0;color:var(--dim);text-align:right}
+.dbar-track{flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;position:relative;overflow:hidden}
+.dbar-fill{height:100%;border-radius:4px;transition:.4s}
+.dbar-val{width:72px;flex-shrink:0;font-size:9px;font-weight:700;text-align:left;white-space:nowrap}
+
+/* pct badge inline */
+.mvals{display:flex;justify-content:space-between;align-items:center;margin-top:1px}
+.mpct{font-size:12px;font-weight:800;white-space:nowrap}
 
 /* ── Badge ── */
 .badge{display:inline-block;padding:1px 8px;border-radius:99px;font-size:10px;font-weight:700}
@@ -102,18 +106,17 @@ canvas{display:block;width:100%!important;height:100%!important}
 .br{background:rgba(239,68,68,.15);color:var(--red)}
 
 /* ── Spinner ── */
-#spin{position:fixed;inset:0;z-index:999;background:rgba(15,17,23,.96);
+#spin{position:fixed;inset:0;z-index:999;background:rgba(15,17,23,.97);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:12px;font-size:15px;color:var(--accent)}
 
-/* ── Scrollbar global ── */
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px}
 
 @media(max-width:1100px){#chart-row{grid-template-columns:1fr}}
 @media(max-width:800px){#krow{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){#krow{grid-template-columns:1fr 1fr};.tab{padding:4px 9px;font-size:11px}}
+@media(max-width:560px){#krow{grid-template-columns:1fr 1fr};.tab{padding:3px 8px;font-size:10py}}
 </style>
 </head>
 <body>
@@ -137,10 +140,10 @@ canvas{display:block;width:100%!important;height:100%!important}
     <input type="date" id="dFim">
     <button class="hbtn" id="btnReset">↺ Mês completo</button>
     <div class="hsp"></div>
-    <span id="ua"></span>
+    <div id="ua">Atualizado: <b id="ua-ts">–</b><span id="ua-sub"></span></div>
   </header>
 
-  <!-- Tabs de setor -->
+  <!-- Tabs -->
   <nav id="tabs">
     <button class="tab active" data-aba="Geral">Geral</button>
     <button class="tab" data-aba="Flexografia">Flexografia</button>
@@ -150,7 +153,7 @@ canvas{display:block;width:100%!important;height:100%!important}
     <button class="tab" data-aba="Revisão">Revisão</button>
   </nav>
 
-  <!-- Conteúdo principal -->
+  <!-- Conteúdo -->
   <main id="cont">
 
     <!-- KPIs -->
@@ -171,7 +174,7 @@ canvas{display:block;width:100%!important;height:100%!important}
         <div class="ks" id="kSt">–</div>
       </div>
       <div class="kc">
-        <div class="kl">Média M/H</div>
+        <div class="kl">Média M/H · Máquinas Ativas</div>
         <div class="kv" id="kMH">–</div>
         <div class="ks" id="kMC">–</div>
       </div>
@@ -184,17 +187,17 @@ canvas{display:block;width:100%!important;height:100%!important}
         <div class="cw"><canvas id="cDia"></canvas></div>
       </div>
       <div class="cc">
-        <div class="ct">Produção por Máquina – M/L <span id="ct-maq-sub" style="font-size:9px;text-transform:none;letter-spacing:0;color:var(--dim)"></span></div>
+        <div class="ct">Produção por Máquina – M/L</div>
         <div class="cw"><canvas id="cMensal"></canvas></div>
       </div>
     </div>
 
     <!-- Desempenho por máquina -->
     <div id="maq-section">
-      <div class="ct" style="margin-bottom:6px">
+      <div class="ct" style="margin-bottom:5px;flex-shrink:0">
         Desempenho por Máquina – Produzido vs Meta
-        <span id="maq-hint" style="font-size:9px;text-transform:none;letter-spacing:0;color:var(--dim);font-weight:400">
-          (clique em uma máquina para ver produção diária)
+        <span style="font-size:9px;text-transform:none;letter-spacing:0;color:var(--dim);font-weight:400">
+          &nbsp;(clique para ver produção diária)
         </span>
       </div>
       <div id="maq-grid"></div>
@@ -208,12 +211,11 @@ Chart.defaults.color = '#94a3b8';
 Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
 Chart.defaults.font.family = "'Segoe UI',system-ui,sans-serif";
 
-/* ── Formatação ──────────────────────────────────────────────── */
-// Mostra metros lineares sem converter para km — sempre M/L
+/* ── Formatação ── */
 function fML(n) {
+  // Metros lineares — sem conversão para km, sempre M/L
   return Math.round(n || 0).toLocaleString('pt-BR') + ' M/L';
 }
-// Abreviação apenas para eixos de gráfico (espaço limitado)
 function fTick(v) {
   if (v >= 1e6) return (v/1e6).toFixed(1).replace('.',',') + 'M';
   if (v >= 1e3) return Math.round(v/1e3) + 'K';
@@ -225,9 +227,9 @@ function pB(p) { return p >= 100 ? 'bg' : p >= 80 ? 'by' : 'br'; }
 function pL(p) { return p >= 100 ? '✅ Acima da meta' : p >= 80 ? '⚠️ Próximo da meta' : '🔴 Abaixo da meta'; }
 function nomeMaquina(s) { return (s||'').replace(/^\d+\s*[-–]\s*/, ''); }
 
-/* ── Estado ──────────────────────────────────────────────────── */
+/* ── Estado ── */
 var D = null, abaA = 'Geral', mesA = null, dI = null, dF = null;
-var CH = {}, mqSel = null; // máquina selecionada para ver diário
+var CH = {}, mqSel = null;
 
 function chrt(id, cfg) {
   if (CH[id]) { try { CH[id].destroy(); } catch(e){} delete CH[id]; }
@@ -237,23 +239,21 @@ function chrt(id, cfg) {
   return CH[id];
 }
 
-/* ── Render ──────────────────────────────────────────────────── */
+/* ── Render principal ── */
 function render() {
   if (!D || !mesA) return;
   var mes = D.meses[mesA]; if (!mes) return;
   var ab  = mes.abas[abaA]; if (!ab) return;
 
-  // Filtra dias pelo intervalo selecionado
   var diasFull = ab.por_dia || [];
   var dias = diasFull.filter(function(d) {
     if (dI && d.data < dI) return false;
     if (dF && d.data > dF) return false;
     return true;
   });
+  var frac = diasFull.length > 0 ? dias.length / diasFull.length : 1;
 
-  var frac = (diasFull.length > 0) ? (dias.length / diasFull.length) : 1;
-
-  // Aplica filtro de datas nas máquinas
+  // Filtra máquinas pelo intervalo de datas
   var mqs = (ab.por_maquina || []).map(function(m) {
     if (!dI && !dF) return m;
     var mDias = (m.por_dia || []).filter(function(d) {
@@ -261,23 +261,17 @@ function render() {
       if (dF && d.data > dF) return false;
       return true;
     });
-    var metros = mDias.reduce(function(s,d){ return s + (d.metros||0); }, 0);
+    var metros = mDias.reduce(function(s,d){ return s+(d.metros||0); }, 0);
     var meta_metros = Math.round((m.meta_metros||0) * frac);
     var pct = meta_metros > 0 ? +((metros/meta_metros)*100).toFixed(1) : 0;
-    return Object.assign({}, m, {
-      metros: Math.round(metros),
-      meta_metros: meta_metros,
-      performance_pct: pct,
-      por_dia: m.por_dia
-    });
+    return Object.assign({}, m, {metros:Math.round(metros), meta_metros:meta_metros, performance_pct:pct});
   });
 
   // Totais
-  var totM  = dias.reduce(function(s,d){ return s + (d.metros||0); }, 0);
-  var metaT = mqs.reduce(function(s,m){ return s + (m.meta_metros||0); }, 0);
-  var totMin = (ab.total_minutos||0) * frac;
-  var mhMed  = totMin > 0 ? Math.round(totM / (totMin/60)) : 0;
-  var perf   = metaT > 0 ? +((totM/metaT)*100).toFixed(1) : 0;
+  var totM  = dias.reduce(function(s,d){ return s+(d.metros||0); }, 0);
+  var metaT = mqs.reduce(function(s,m){ return s+(m.meta_metros||0); }, 0);
+  var mhMed = ab.mh_medio || 0;
+  var perf  = metaT > 0 ? +((totM/metaT)*100).toFixed(1) : 0;
 
   /* KPIs */
   document.getElementById('kM').textContent  = fML(totM);
@@ -292,140 +286,286 @@ function render() {
   pfEl.textContent = perf.toFixed(1).replace('.',',') + '%';
   pfEl.style.color = pC(perf);
   document.getElementById('kSt').innerHTML =
-    '<span class="badge ' + pB(perf) + '">' + pL(perf) + '</span>';
+    '<span class="badge '+pB(perf)+'">'+pL(perf)+'</span>';
 
-  /* Título do gráfico diário */
+  /* Título gráfico diário */
   var mesLabel = mes.label || mesA;
   document.getElementById('ct-dia').textContent =
-    (mqSel ? 'Produção Diária: ' + nomeMaquina(mqSel) : 'Produção Diária – ' + mesLabel + ' – M/L');
+    mqSel ? 'Diário: ' + nomeMaquina(mqSel) : 'Produção Diária – ' + mesLabel + ' – M/L';
 
   rDiario(dias, mqs);
   rMensal(mqs);
   rDesempenho(mqs);
 }
 
-/* ── Gráfico diário ──────────────────────────────────────────── */
+/* ── Gráfico diário ── */
 function rDiario(dias, mqs) {
   var labels, vals;
 
   if (mqSel) {
-    // Modo: ver produção diária de uma máquina específica
     var mach = null;
     var abFull = D.meses[mesA].abas[abaA];
-    if (abFull && abFull.por_maquina) {
-      abFull.por_maquina.forEach(function(m){ if (m.maquina === mqSel) mach = m; });
-    }
-    var mDias = mach ? (mach.por_dia || []).filter(function(d){
+    if (abFull && abFull.por_maquina)
+      abFull.por_maquina.forEach(function(m){ if (m.maquina===mqSel) mach=m; });
+    var mDias = mach ? (mach.por_dia||[]).filter(function(d){
       if (dI && d.data < dI) return false;
       if (dF && d.data > dF) return false;
       return true;
     }) : [];
     labels = mDias.map(function(d){ return d.data.slice(5).replace('-','/'); });
-    vals   = mDias.map(function(d){ return d.metros || 0; });
-    document.getElementById('ct-maq-sub').textContent = '';
+    vals   = mDias.map(function(d){ return d.metros||0; });
   } else {
-    // Modo: total do setor
     labels = dias.map(function(d){ return d.data.slice(5).replace('-','/'); });
-    vals   = dias.map(function(d){ return d.metros || 0; });
-    document.getElementById('ct-maq-sub').textContent = '';
+    vals   = dias.map(function(d){ return d.metros||0; });
   }
 
-  var avg = vals.length > 0
-    ? vals.reduce(function(a,b){ return a+b; }, 0) / vals.length
-    : 0;
+  var avg = vals.length > 0 ? vals.reduce(function(a,b){return a+b;},0)/vals.length : 0;
 
   chrt('cDia', {
     type: 'bar',
     data: {
       labels: labels,
       datasets: [{
-        label: 'M/L',
+        label: 'Produção (M/L)',
         data: vals,
         backgroundColor: vals.map(function(v){
-          return v >= avg ? 'rgba(34,197,94,0.72)' : 'rgba(0,203,160,0.5)';
+          return v >= avg ? 'rgba(34,197,94,0.75)' : 'rgba(0,203,160,0.5)';
         }),
-        borderRadius: 4
+        borderRadius: 3
       }]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: function(c){ return '  ' + fML(c.parsed.y); }
-          }
-        }
+        legend: {display:false},
+        tooltip: { callbacks: { label: function(c){ return '  '+fML(c.parsed.y); } } }
       },
       scales: {
-        x: {
-          grid: { display: false },
-          ticks: { maxRotation: 65, minRotation: 45, font: { size: 9 } }
-        },
-        y: {
-          ticks: {
-            callback: fTick,
-            font: { size: 9 }
-          }
-        }
+        x: { grid:{display:false}, ticks:{maxRotation:65,minRotation:45,font:{size:9}} },
+        y: { ticks:{callback:fTick,font:{size:9}} }
       }
     }
   });
 }
 
-/* ── Gráfico por máquina (horizontal) ───────────────────────── */
+/* ── Gráfico por máquina — produzido vs meta lado a lado ── */
 function rMensal(mqs) {
   var sorted = mqs.slice()
-    .filter(function(m){ return m.metros > 0; })
-    .sort(function(a,b){ return b.metros - a.metros; })
-    .slice(0, 14);
+    .filter(function(m){ return m.metros>0 || m.meta_metros>0; })
+    .sort(function(a,b){ return b.metros-a.metros; })
+    .slice(0, 15);
 
-  var labels = sorted.map(function(m){ return nomeMaquina(m.maquina); });
-  var vals   = sorted.map(function(m){ return m.metros; });
-  var colors = sorted.map(function(m){ return pC(m.performance_pct) + 'bb'; });
+  var labels  = sorted.map(function(m){ return nomeMaquina(m.maquina); });
+  var prodVals = sorted.map(function(m){ return m.metros; });
+  var metaVals = sorted.map(function(m){ return m.meta_metros; });
 
   chrt('cMensal', {
     type: 'bar',
     data: {
       labels: labels,
-      datasets: [{
-        label: 'Produzido (M/L)',
-        data: vals,
-        backgroundColor: colors,
-        borderRadius: 4
-      }]
+      datasets: [
+        {
+          label: 'Produzido',
+          data: prodVals,
+          backgroundColor: sorted.map(function(m){ return pC(m.performance_pct)+'cc'; }),
+          borderRadius: 3,
+          order: 1
+        },
+        {
+          label: 'Meta',
+          data: metaVals,
+          backgroundColor: 'rgba(148,163,184,0.20)',
+          borderColor: 'rgba(148,163,184,0.50)',
+          borderWidth: 1,
+          borderRadius: 3,
+          order: 2
+        }
+      ]
     },
     options: {
       indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { display: false },
+        legend: {
+          display: true,
+          position: 'top',
+          labels: { font:{size:9}, boxWidth:10, padding:8 }
+        },
         tooltip: {
           callbacks: {
-            label: function(c){ return '  ' + fML(c.parsed.x); }
+            label: function(c){ return '  '+c.dataset.label+': '+fML(c.parsed.x); }
           }
         }
       },
       scales: {
-        x: {
-          ticks: { callback: fTick, font: { size: 9 } }
-        },
-        y: {
-          grid: { display: false },
-          ticks: { font: { size: 9 } }
-        }
+        x: { ticks:{callback:fTick,font:{size:9}} },
+        y: { grid:{display:false}, ticks:{font:{size:9}} }
       }
     }
   });
 }
 
-/* ── Cards de desempenho por máquina ────────────────────────── */
+/* ── Cards de desempenho por máquina ── */
 function rDesempenho(mqs) {
   var el = document.getElementById('maq-grid');
   el.innerHTML = '';
 
-  // Ordena: primeiro por performance (acima da meta), depois por metros
   var sorted = mqs.slice().sort(function(a,b){
-    return
+    // Ordena por % de performance decrescente
+    return (b.performance_pct||0) - (a.performance_pct||0);
+  });
+
+  sorted.forEach(function(m) {
+    if (!m.metros && !m.meta_metros) return;
+    var pct  = m.performance_pct || 0;
+    var cor  = pC(pct);
+    // largura da barra produzida (capped em 100% visualmente, mas mostra real no texto)
+    var prodW = Math.min(100, pct);
+    // largura barra meta sempre 100%
+    var card = document.createElement('div');
+    card.className = 'mq' + (mqSel === m.maquina ? ' sel' : '');
+    card.innerHTML =
+      '<div class="mn" title="'+m.maquina+'">'+m.maquina+'</div>'+
+      '<div class="dbar-wrap">'+
+        /* barra produzido */
+        '<div class="dbar-row">'+
+          '<span class="dbar-lbl">Produzido</span>'+
+          '<div class="dbar-track">'+
+            '<div class="dbar-fill" style="width:'+prodW+'%;background:'+cor+'"></div>'+
+          '</div>'+
+          '<span class="dbar-val" style="color:'+cor+'">'+fML(m.metros)+'</span>'+
+        '</div>'+
+        /* barra meta */
+        '<div class="dbar-row">'+
+          '<span class="dbar-lbl">Meta</span>'+
+          '<div class="dbar-track">'+
+            '<div class="dbar-fill" style="width:100%;background:rgba(148,163,184,0.35)"></div>'+
+          '</div>'+
+          '<span class="dbar-val" style="color:var(--dim)">'+fML(m.meta_metros)+'</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="mvals">'+
+        '<span class="badge '+pB(pct)+'" style="font-size:9px">'+pL(pct)+'</span>'+
+        '<span class="mpct" style="color:'+cor+'">'+
+          (pct||0).toFixed(1).replace('.',',')+'%'+
+        '</span>'+
+      '</div>';
+
+    card.addEventListener('click', function() {
+      if (mqSel === m.maquina) {
+        mqSel = null;
+      } else {
+        mqSel = m.maquina;
+      }
+      render();
+    });
+    el.appendChild(card);
+  });
+}
+
+/* ── Inicialização ── */
+function init(data) {
+  D = data;
+
+  /* Horário real de atualização vindo do JSON */
+  var ts = D.ultima_atualizacao || D.updated_at || '';
+  if (ts) {
+    try {
+      var dt = new Date(ts.replace(' ','T'));
+      var tsEl  = document.getElementById('ua-ts');
+      var subEl = document.getElementById('ua-sub');
+      tsEl.textContent = dt.toLocaleString('pt-BR',{
+        day:'2-digit',month:'2-digit',year:'numeric',
+        hour:'2-digit',minute:'2-digit'
+      });
+      subEl.textContent = '';
+    } catch(e) {
+      document.getElementById('ua-ts').textContent = ts;
+    }
+  } else {
+    document.getElementById('ua-ts').textContent = 'Desconhecido';
+  }
+
+  /* Popula selector de mês */
+  var sel = document.getElementById('sMes');
+  var meses = Object.keys(D.meses || {}).sort();
+  meses.forEach(function(k) {
+    var op = document.createElement('option');
+    op.value = k;
+    op.textContent = D.meses[k].label || k;
+    sel.appendChild(op);
+  });
+
+  /* Seleciona o mês mais recente */
+  mesA = meses[meses.length - 1] || null;
+  if (mesA) sel.value = mesA;
+
+  setDateRange();
+
+  /* Eventos */
+  sel.addEventListener('change', function() {
+    mesA = sel.value;
+    mqSel = null;
+    setDateRange();
+    render();
+  });
+
+  document.getElementById('dIni').addEventListener('change', function() {
+    dI = this.value || null;
+    mqSel = null;
+    render();
+  });
+  document.getElementById('dFim').addEventListener('change', function() {
+    dF = this.value || null;
+    mqSel = null;
+    render();
+  });
+  document.getElementById('btnReset').addEventListener('click', function() {
+    setDateRange();
+    mqSel = null;
+    render();
+  });
+
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      abaA = t.dataset.aba;
+      mqSel = null;
+      render();
+    });
+  });
+
+  document.getElementById('spin').style.display = 'none';
+  render();
+}
+
+function setDateRange() {
+  if (!D || !mesA) return;
+  var per = (D.meses[mesA] || {}).periodo || {};
+  dI = per.inicio || null;
+  dF = per.fim    || null;
+  var ini = document.getElementById('dIni');
+  var fim = document.getElementById('dFim');
+  ini.value = dI || '';
+  fim.value = dF || '';
+  /* Limita o picker ao mês selecionado */
+  ini.min = dI || ''; ini.max = dF || '';
+  fim.min = dI || ''; fim.max = dF || '';
+}
+
+/* ── Carrega dados.json ── */
+fetch('dados.json?v=' + Date.now())
+  .then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(init)
+  .catch(function(e) {
+    var sp = document.getElementById('spin');
+    sp.innerHTML = '<div style="color:#ef4444">❌ Erro ao carregar dados.json</div>' +
+      '<div style="font-size:11px;color:#94a3b8">'+e.message+'</div>';
+  });
+</script>
+</body>
+</html>
