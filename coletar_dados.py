@@ -602,4 +602,9 @@ def main():
     aba_geral = novo_mes["abas"].get("Geral", {})
     log(f"   Total metros: {aba_geral.get('total_metros',0):>10,.0f} M/L")
     log(f"   Meta total:   {aba_geral.get('meta_total',0):>10,.0f} M/L")
-    log(f"   Perfo
+    log(f"   Performance: {aba_geral.get('performance_pct',0):.1f}%")
+    log("-" * 50)
+
+
+if __name__ == "__main__":
+    main()
