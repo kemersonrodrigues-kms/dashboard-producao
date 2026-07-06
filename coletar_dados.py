@@ -17,7 +17,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
 
 import pandas as pd
 
@@ -127,7 +126,8 @@ def configurar_navegador(headless=True):
     opts.add_experimental_option("excludeSwitches", ["enable-automation"])
     opts.add_experimental_option("useAutomationExtension", False)
 
-    service = Service(ChromeDriverManager().install())
+    # Selenium 4.6+ (selenium-manager) detecta o ChromeDriver automaticamente
+    service = Service()
     driver  = webdriver.Chrome(service=service, options=opts)
     driver.set_page_load_timeout(180)
     driver.execute_cdp_cmd("Browser.setDownloadBehavior", {
