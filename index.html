@@ -116,7 +116,7 @@ canvas{display:block;width:100%!important;height:100%!important}
 
 @media(max-width:1100px){#chart-row{grid-template-columns:1fr}}
 @media(max-width:800px){#krow{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){#krow{grid-template-columns:1fr 1fr};.tab{padding:3px 8px;font-size:10py}}
+@media(max-width:560px){#krow{grid-template-columns:1fr 1fr};.tab{padding:3px 8px;font-size:10px}}
 </style>
 </head>
 <body>
@@ -540,11 +540,17 @@ function init(data) {
   render();
 }
 
+function ptToISO(s) {
+  if (!s) return null;
+  var p = s.split('/');
+  if (p.length === 3) return p[2] + '-' + p[1] + '-' + p[0];
+  return s; // já em formato ISO
+}
 function setDateRange() {
   if (!D || !mesA) return;
   var per = (D.meses[mesA] || {}).periodo || {};
-  dI = per.inicio || null;
-  dF = per.fim    || null;
+  dI = ptToISO(per.inicio) || null;
+  dF = ptToISO(per.fim)    || null;
   var ini = document.getElementById('dIni');
   var fim = document.getElementById('dFim');
   ini.value = dI || '';
