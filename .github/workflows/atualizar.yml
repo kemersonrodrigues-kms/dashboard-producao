@@ -33,7 +33,9 @@ jobs:
         run: |
           git config user.name  "Bot Grow Label"
           git config user.email "bot@growlabel.com.br"
+          git stash --include-untracked
           git pull --rebase origin main
+          git stash pop
           git add dados.json
           if git diff --staged --quiet; then
             echo "Sem alterações nos dados — nenhum commit necessário."
