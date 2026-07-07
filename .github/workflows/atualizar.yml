@@ -1,4 +1,35 @@
-- name: Salvar dados.json no repositório
+name: Atualizar Dados de Produção
+on:
+  schedule:
+    - cron: '*/30 8-23 * * 1-6'
+    - cron: '*/30 0-2 * * 0-6'
+  workflow_dispatch:
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+      - name: Instalar dependências Python
+        run: |
+          pip install --upgrade pip
+          pip install selenium openpyxl pandas
+      - name: Coletar dados do i4
+        env:
+          I4_USUARIO: ${{ secrets.I4_USUARIO }}
+          I4_SENHA:   ${{ secrets.I4_SENHA }}
+        run: python coletar_dados.py
+      - name: Salvar dados.json no repositório
         run: |
           git config user.name  "Bot Grow Label"
           git config user.email "bot@growlabel.com.br"
