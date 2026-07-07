@@ -9,6 +9,7 @@ Credenciais via variáveis de ambiente I4_USUARIO e I4_SENHA (GitHub Secrets).
 
 import os, sys, time, json, shutil, logging, tempfile, traceback
 from datetime import datetime, timedelta, date
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 from selenium import webdriver
@@ -82,8 +83,10 @@ log = logging.info
 # ─────────────────────────────────────────────────────────────
 # HELPERS SELENIUM
 # ─────────────────────────────────────────────────────────────
+BRT = ZoneInfo("America/Sao_Paulo")
+
 def calcular_periodo_mes_atual():
-    hoje = datetime.now()
+    hoje = datetime.now(BRT)
     return hoje.replace(day=1).strftime("%d/%m/%Y"), hoje.strftime("%d/%m/%Y")
 
 
@@ -534,7 +537,7 @@ def baixar_excel():
 def main():
     log("=" * 60)
     log("  GROW LABEL — Coletor de Dados (GitHub Actions)")
-    log(f"  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    log(f"  {datetime.now(BRT).strftime('%Y-%m-%d %H:%M:%S')} BRT")
     log("=" * 60)
 
     # Config
@@ -573,8 +576,8 @@ def main():
     if "meses" not in dados:
         dados["meses"] = {}
 
-    # Chave do mês atual (YYYY-MM)
-    hoje = datetime.now()
+    # Chave do mês atual (YYYY-MM) — usar fuso de São Paulo
+    hoje = datetime.now(BRT)
     chave_mes = hoje.strftime("%Y-%m")
     label_mes = f"{MESES_PT[hoje.month]} {hoje.year}"
 
@@ -586,7 +589,7 @@ def main():
 
     # Atualizar lista de meses disponíveis
     dados["meses_disponiveis"] = sorted(dados["meses"].keys())
-    dados["ultima_atualizacao"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    dados["ultima_atualizacao"] = datetime.now(BRT).strftime("%Y-%m-%dT%H:%M:%S")
 
     # Salvar
     output.write_text(
