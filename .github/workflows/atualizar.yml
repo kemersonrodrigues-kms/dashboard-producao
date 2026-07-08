@@ -1,8 +1,8 @@
 name: Atualizar Dados de Produção
 on:
   schedule:
-    - cron: '*/30 8-23 * * 1-6'
-    - cron: '*/30 0-2 * * 0-6'
+    - cron: '*/10 8-23 * * 1-6'
+    - cron: '*/10 0-2 * * 0-6'
   workflow_dispatch:
 jobs:
   coletar:
